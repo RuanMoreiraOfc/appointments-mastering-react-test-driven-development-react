@@ -13,6 +13,7 @@ const Appointment = ({ customer: { firstName, lastName } }) => (
       </tr>
       <tr>
         <td>Phone number: </td>
+        <td>(111) 222-3333</td>
       </tr>
     </tbody>
   </table>
