@@ -102,4 +102,16 @@ describe('Appointment', () => {
       container.querySelector('tr:nth-child(2) td:nth-child(2)').textContent,
     ).toEqual('(111) 222-3333');
   });
+
+  it('renders another customer phone number', () => {
+    const customer = { phoneNumber: '(222) 333-4444' };
+    const component = <Appointment customer={customer} />;
+    const container = createContainer();
+
+    render(container)(component);
+
+    expect(
+      container.querySelector('tr:nth-child(2) td:nth-child(2)').textContent,
+    ).toEqual('(222) 333-4444');
+  });
 });
