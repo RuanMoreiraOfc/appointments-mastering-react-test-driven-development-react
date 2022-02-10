@@ -4,5 +4,8 @@
   "private": true,
   "main": "index.js",
   "author": "Ruan Moreira de Jesus",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^27.5.1"
+  }
 }
