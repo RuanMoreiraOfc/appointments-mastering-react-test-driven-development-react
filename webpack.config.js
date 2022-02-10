@@ -7,6 +7,7 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 
 module.exports = /** @type {webpack.Configuration} */ ({
   mode: isDevelopment ? 'development' : 'production',
+  devtool: isDevelopment ? 'eval-source-map' : 'source-map',
   entry: path.resolve(__dirname, 'src', 'index'),
   output: {
     path: path.resolve(__dirname, 'build'),
