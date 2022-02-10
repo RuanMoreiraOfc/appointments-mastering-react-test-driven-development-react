@@ -2,4 +2,4 @@ import React from 'react';
 
 export { AppointmentsDayView };
 
-const AppointmentsDayView = () => null;
+const AppointmentsDayView = () => <div id='appointmentsDayView' />;
