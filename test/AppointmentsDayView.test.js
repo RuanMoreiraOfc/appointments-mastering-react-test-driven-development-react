@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactTestUtils from 'react-dom/test-utils';
 
 import { AppointmentsDayView } from '../src/AppointmentsDayView';
 
@@ -81,5 +82,16 @@ describe('AppointmentsDayView', () => {
 
     expect(container.querySelectorAll('li > button')).toHaveLength(2);
     expect(container.querySelectorAll('li > button')[0].type).toEqual('button');
+  });
+
+  it('renders another appointment when selected', () => {
+    const component = <AppointmentsDayView appointments={appointments} />;
+    const container = createContainer();
+
+    render(container)(component);
+    const button = container.querySelectorAll('button')[1];
+    ReactTestUtils.Simulate.click(button);
+
+    expect(container.textContent).toMatch('Jordan');
   });
 });
