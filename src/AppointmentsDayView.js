@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Appointment } from './Appointment';
+
 export { AppointmentsDayView };
 
 const AppointmentsDayView = ({ appointments }) => (
@@ -11,7 +13,11 @@ const AppointmentsDayView = ({ appointments }) => (
         </li>
       ))}
     </ol>
-    <p>There are no appointments scheduled for today.</p>
+    {appointments.length === 0 ? (
+      <p>There are no appointments scheduled for today.</p>
+    ) : (
+      <Appointment {...appointments[0]} />
+    )}
   </div>
 );
 
