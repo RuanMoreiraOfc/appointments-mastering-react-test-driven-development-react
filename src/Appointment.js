@@ -4,6 +4,6 @@ export { Appointment };
 
 const Appointment = ({ customer: { firstName, lastName } }) => (
   <div>
-    {firstName} {lastName}
+    Customer: {firstName} {lastName}
   </div>
 );
