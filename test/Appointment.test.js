@@ -38,4 +38,14 @@ describe('Appointment', () => {
 
     expect(container.textContent).toMatch('Ashley Garcia');
   });
+
+  it('renders another customer last name', () => {
+    const customer = { firstName: 'Jordan', lastName: 'Brown' };
+    const component = <Appointment customer={customer} />;
+    const container = createContainer();
+
+    render(container)(component);
+
+    expect(container.textContent).toMatch('Jordan Brown');
+  });
 });
