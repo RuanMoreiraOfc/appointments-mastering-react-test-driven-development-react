@@ -9,7 +9,9 @@ const AppointmentsDayView = ({ appointments }) => (
     <ol>
       {appointments.map((appointment) => (
         <li key={appointment.startsAt}>
-          {dateToTimeString(appointment.startsAt)}
+          <button type='button'>
+            {dateToTimeString(appointment.startsAt)}
+          </button>
         </li>
       ))}
     </ol>
