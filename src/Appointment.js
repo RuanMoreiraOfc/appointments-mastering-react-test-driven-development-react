@@ -3,7 +3,13 @@ import React from 'react';
 export { Appointment };
 
 const Appointment = ({ customer: { firstName, lastName } }) => (
-  <div>
-    Customer: {firstName} {lastName}
-  </div>
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          Customer: {firstName} {lastName}
+        </td>
+      </tr>
+    </tbody>
+  </table>
 );
