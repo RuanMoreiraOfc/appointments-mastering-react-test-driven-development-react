@@ -18,7 +18,7 @@ const AppointmentsDayView = ({ appointments }) => (
     {appointments.length === 0 ? (
       <p>There are no appointments scheduled for today.</p>
     ) : (
-      <Appointment {...appointments[0]} />
+      <Appointment customer={appointments[0].customer} />
     )}
   </div>
 );
