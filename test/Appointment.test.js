@@ -58,4 +58,14 @@ describe('Appointment', () => {
 
     expect(container.textContent).toMatch('Customer: Ashley Garcia');
   });
+
+  it('renders in a table element', () => {
+    const customer = {};
+    const component = <Appointment customer={customer} />;
+    const container = createContainer();
+
+    render(container)(component);
+
+    expect(container.firstElementChild.tagName).toEqual('TABLE');
+  });
 });
