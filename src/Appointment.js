@@ -6,8 +6,9 @@ const Appointment = ({ customer: { firstName, lastName } }) => (
   <table>
     <tbody>
       <tr>
+        <td>Customer: </td>
         <td>
-          Customer: {firstName} {lastName}
+          {firstName} {lastName}
         </td>
       </tr>
     </tbody>
