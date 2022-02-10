@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "main": "index.js",
-  "author": "Ruan Moreira de Jesus",
+  "author": {
+    "name": "Ruan Moreira de Jesus",
+    "email": "ruanmoreiraofc@hotmail.com",
+    "url": "https://www.github.com/ruanmoreiraofc"
+  },
   "license": "MIT",
   "scripts": {
     "test": "jest",
