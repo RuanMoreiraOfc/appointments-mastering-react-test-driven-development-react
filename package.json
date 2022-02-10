@@ -1,0 +1,8 @@
+{
+  "name": "appointments-mastering-react-test-driven-development",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "author": "Ruan Moreira de Jesus",
+  "license": "MIT"
+}
