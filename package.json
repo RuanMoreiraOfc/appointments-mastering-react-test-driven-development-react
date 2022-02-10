@@ -11,8 +11,8 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "dev": "webpack serve",
-    "build": "webpack"
+    "dev": "cross-env NODE_ENV=development webpack serve",
+    "build": "cross-env NODE_ENV=production webpack"
   },
   "dependencies": {
     "react": "^17.0.2",
