@@ -9,6 +9,18 @@ describe('AppointmentsDayView', () => {
   const render = (container) => (component) =>
     ReactDOM.render(component, container);
 
+  // ***
+
+  const today = new Date();
+  const appointments = [
+    {
+      startsAt: today.setHours(12, 0),
+    },
+    {
+      startsAt: today.setHours(13, 0),
+    },
+  ];
+
   it('renders a div with the right id', () => {
     const appointments = [];
     const component = <AppointmentsDayView appointments={appointments} />;
@@ -20,11 +32,6 @@ describe('AppointmentsDayView', () => {
   });
 
   it('renders multiple appointments in an ol element', () => {
-    const today = new Date();
-    const appointments = [
-      { startsAt: today.setHours(12, 0) },
-      { startsAt: today.setHours(13, 0) },
-    ];
     const component = <AppointmentsDayView appointments={appointments} />;
     const container = createContainer();
 
@@ -35,11 +42,6 @@ describe('AppointmentsDayView', () => {
   });
 
   it('renders each appointment in an li', () => {
-    const today = new Date();
-    const appointments = [
-      { startsAt: today.setHours(12, 0) },
-      { startsAt: today.setHours(13, 0) },
-    ];
     const component = <AppointmentsDayView appointments={appointments} />;
     const container = createContainer();
 
@@ -51,8 +53,7 @@ describe('AppointmentsDayView', () => {
   });
 
   it('initially shows a message saying there are no appointments today', () => {
-    const appointments = [];
-    const component = <AppointmentsDayView appointments={appointments} />;
+    const component = <AppointmentsDayView appointments={[]} />;
     const container = createContainer();
 
     render(container)(component);
