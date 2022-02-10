@@ -90,4 +90,16 @@ describe('Appointment', () => {
       'Phone number: ',
     );
   });
+
+  it('renders customer phone number', () => {
+    const customer = { phoneNumber: '(111) 222-3333' };
+    const component = <Appointment customer={customer} />;
+    const container = createContainer();
+
+    render(container)(component);
+
+    expect(
+      container.querySelector('tr:nth-child(2) td:nth-child(2)').textContent,
+    ).toEqual('(111) 222-3333');
+  });
 });
