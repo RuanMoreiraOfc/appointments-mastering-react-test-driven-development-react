@@ -15,9 +15,11 @@ describe('AppointmentsDayView', () => {
   const appointments = [
     {
       startsAt: today.setHours(12, 0),
+      customer: { firstName: 'Ashley' },
     },
     {
       startsAt: today.setHours(13, 0),
+      customer: { firstName: 'Jordan' },
     },
   ];
 
@@ -61,5 +63,13 @@ describe('AppointmentsDayView', () => {
     expect(container.textContent).toMatch(
       'There are no appointments scheduled for today.',
     );
+  });
+
+  it('selects the first appointment by default', () => {
+    const component = <AppointmentsDayView appointments={appointments} />;
+    const container = createContainer();
+
+    render(container)(component);
+    expect(container.textContent).toMatch('Ashley');
   });
 });
