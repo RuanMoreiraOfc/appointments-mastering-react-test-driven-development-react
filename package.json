@@ -25,6 +25,7 @@
     "@babel/runtime": "^7.17.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
     "babel-loader": "^8.2.3",
+    "cross-env": "^7.0.3",
     "html-webpack-plugin": "^5.5.0",
     "jest": "^27.5.1",
     "webpack": "^5.68.0",
