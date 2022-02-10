@@ -68,4 +68,14 @@ describe('Appointment', () => {
 
     expect(container.firstElementChild.tagName).toEqual('TABLE');
   });
+
+  it('renders label in a separated td', () => {
+    const customer = {};
+    const component = <Appointment customer={customer} />;
+    const container = createContainer();
+
+    render(container)(component);
+
+    expect(container.querySelector('td').textContent).toEqual('Customer: ');
+  });
 });
