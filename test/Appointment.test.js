@@ -78,4 +78,16 @@ describe('Appointment', () => {
 
     expect(container.querySelector('td').textContent).toEqual('Customer: ');
   });
+
+  it('renders phone number label', () => {
+    const customer = {};
+    const component = <Appointment customer={customer} />;
+    const container = createContainer();
+
+    render(container)(component);
+
+    expect(container.querySelector('tr:nth-child(2) td').textContent).toEqual(
+      'Phone number: ',
+    );
+  });
 });
