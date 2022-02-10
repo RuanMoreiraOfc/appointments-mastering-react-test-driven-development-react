@@ -2,4 +2,12 @@ import React from 'react';
 
 export { AppointmentsDayView };
 
-const AppointmentsDayView = () => <div id='appointmentsDayView' />;
+const AppointmentsDayView = ({ appointments }) => (
+  <div id='appointmentsDayView'>
+    <ol>
+      {appointments.map((appointment) => (
+        <div key={appointment.startsAt} />
+      ))}
+    </ol>
+  </div>
+);
