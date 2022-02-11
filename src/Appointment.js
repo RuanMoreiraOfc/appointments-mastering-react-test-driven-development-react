@@ -2,7 +2,14 @@ import React from 'react';
 
 export { Appointment };
 
-const Appointment = ({ customer: { firstName, lastName, phoneNumber } }) => (
+const Appointment = ({
+  customer: {
+    firstName, //
+    lastName,
+    phoneNumber,
+    stylist,
+  },
+}) => (
   <table>
     <tbody>
       <tr>
@@ -17,7 +24,7 @@ const Appointment = ({ customer: { firstName, lastName, phoneNumber } }) => (
       </tr>
       <tr>
         <td>Stylist: </td>
-        <td>Mario</td>
+        <td>{stylist}</td>
       </tr>
     </tbody>
   </table>
