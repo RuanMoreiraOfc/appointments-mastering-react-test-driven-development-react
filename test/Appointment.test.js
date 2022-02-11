@@ -126,4 +126,16 @@ describe('Appointment', () => {
       'Stylist: ',
     );
   });
+
+  it('renders customer stylist', () => {
+    const customer = { stylist: 'Mario' };
+    const component = <Appointment customer={customer} />;
+    const container = createContainer();
+
+    render(container)(component);
+
+    expect(
+      container.querySelector('tr:nth-child(3) td:nth-child(2)').textContent,
+    ).toEqual('Mario');
+  });
 });
