@@ -174,4 +174,16 @@ describe('Appointment', () => {
       container.querySelector('tr:nth-child(4) td:nth-child(2)').textContent,
     ).toEqual('Cut');
   });
+
+  it('renders another customer service', () => {
+    const customer = { service: 'Beard trim' };
+    const component = <Appointment customer={customer} />;
+    const container = createContainer();
+
+    render(container)(component);
+
+    expect(
+      container.querySelector('tr:nth-child(4) td:nth-child(2)').textContent,
+    ).toEqual('Beard trim');
+  });
 });
