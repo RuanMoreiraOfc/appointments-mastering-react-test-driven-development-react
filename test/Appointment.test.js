@@ -114,4 +114,16 @@ describe('Appointment', () => {
       container.querySelector('tr:nth-child(2) td:nth-child(2)').textContent,
     ).toEqual('(222) 333-4444');
   });
+
+  it('renders stylist label', () => {
+    const customer = {};
+    const component = <Appointment customer={customer} />;
+    const container = createContainer();
+
+    render(container)(component);
+
+    expect(container.querySelector('tr:nth-child(3) td').textContent).toEqual(
+      'Stylist: ',
+    );
+  });
 });
