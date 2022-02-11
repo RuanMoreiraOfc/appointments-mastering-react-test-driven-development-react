@@ -186,4 +186,16 @@ describe('Appointment', () => {
       container.querySelector('tr:nth-child(4) td:nth-child(2)').textContent,
     ).toEqual('Beard trim');
   });
+
+  it('renders notes label', () => {
+    const customer = {};
+    const component = <Appointment customer={customer} />;
+    const container = createContainer();
+
+    render(container)(component);
+
+    expect(container.querySelector('tr:nth-child(5) td').textContent).toEqual(
+      'Notes: ',
+    );
+  });
 });
