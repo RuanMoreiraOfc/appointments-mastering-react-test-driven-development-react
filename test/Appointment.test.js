@@ -198,4 +198,16 @@ describe('Appointment', () => {
       'Notes: ',
     );
   });
+
+  it('renders customer notes', () => {
+    const customer = { notes: 'None' };
+    const component = <Appointment customer={customer} />;
+    const container = createContainer();
+
+    render(container)(component);
+
+    expect(
+      container.querySelector('tr:nth-child(5) td:nth-child(2)').textContent,
+    ).toEqual('None');
+  });
 });
