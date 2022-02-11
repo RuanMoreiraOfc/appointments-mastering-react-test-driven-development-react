@@ -9,6 +9,7 @@ const Appointment = ({
     phoneNumber,
     stylist,
     service,
+    notes,
   },
 }) => (
   <table>
@@ -33,7 +34,7 @@ const Appointment = ({
       </tr>
       <tr>
         <td>Notes: </td>
-        <td>None</td>
+        <td>{notes}</td>
       </tr>
     </tbody>
   </table>
