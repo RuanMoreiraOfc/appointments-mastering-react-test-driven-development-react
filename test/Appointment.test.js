@@ -138,4 +138,16 @@ describe('Appointment', () => {
       container.querySelector('tr:nth-child(3) td:nth-child(2)').textContent,
     ).toEqual('Mario');
   });
+
+  it('renders another customer stylist', () => {
+    const customer = { stylist: 'Zack' };
+    const component = <Appointment customer={customer} />;
+    const container = createContainer();
+
+    render(container)(component);
+
+    expect(
+      container.querySelector('tr:nth-child(3) td:nth-child(2)').textContent,
+    ).toEqual('Zack');
+  });
 });
