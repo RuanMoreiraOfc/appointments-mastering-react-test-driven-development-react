@@ -31,6 +31,9 @@ const Appointment = ({
         <td>Service: </td>
         <td>{service}</td>
       </tr>
+      <tr>
+        <td>Notes: </td>
+      </tr>
     </tbody>
   </table>
 );
