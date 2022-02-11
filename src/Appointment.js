@@ -15,6 +15,9 @@ const Appointment = ({ customer: { firstName, lastName, phoneNumber } }) => (
         <td>Phone number: </td>
         <td>{phoneNumber}</td>
       </tr>
+      <tr>
+        <td>Stylist: </td>
+      </tr>
     </tbody>
   </table>
 );
