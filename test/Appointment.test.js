@@ -162,4 +162,16 @@ describe('Appointment', () => {
       'Service: ',
     );
   });
+
+  it('renders customer service', () => {
+    const customer = { service: 'Cut' };
+    const component = <Appointment customer={customer} />;
+    const container = createContainer();
+
+    render(container)(component);
+
+    expect(
+      container.querySelector('tr:nth-child(4) td:nth-child(2)').textContent,
+    ).toEqual('Cut');
+  });
 });
