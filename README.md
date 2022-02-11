@@ -64,13 +64,13 @@ Also is good have a code editor like [VSCode][btn-vscode].
 ###### - to clone the repository
 
 ```bash
-git clone https://github.com/ruanmoreiraofc/appointments-mastering-react-test-drive-development.git
+git clone https://github.com/ruanmoreiraofc/appointments-mastering-react-test-driven-development.git
 ```
 
 ###### - to enter into the folder
 
 ```bash
-cd appointments-mastering-react-test-drive-development
+cd appointments-mastering-react-test-driven-development
 ```
 
 ###### - to install the dependencies
@@ -137,16 +137,16 @@ Made with :heart: by Ruan Moreira de Jesus!
 
 <!-- *** INFO CARDS *** -->
 
-[card-languages]: https://img.shields.io/github/languages/count/ruanmoreiraofc/appointments-mastering-react-test-drive-development?style=for-the-badge&label=Languages
-[card-last-commit]: https://img.shields.io/github/last-commit/ruanmoreiraofc/appointments-mastering-react-test-drive-development?style=for-the-badge&label=Last%20Commit
-[card-repo-size]: https://img.shields.io/github/repo-size/ruanmoreiraofc/appointments-mastering-react-test-drive-development?style=for-the-badge&label=Repo%20Size
-[card-code-size]: https://img.shields.io/github/languages/code-size/ruanmoreiraofc/appointments-mastering-react-test-drive-development?style=for-the-badge&label=Code%20Size
-[card-license]: https://img.shields.io/github/license/ruanmoreiraofc/appointments-mastering-react-test-drive-development?style=for-the-badge&label=License
-[card-issues]: https://img.shields.io/github/issues/ruanmoreiraofc/appointments-mastering-react-test-drive-development?style=for-the-badge
+[card-languages]: https://img.shields.io/github/languages/count/ruanmoreiraofc/appointments-mastering-react-test-driven-development?style=for-the-badge&label=Languages
+[card-last-commit]: https://img.shields.io/github/last-commit/ruanmoreiraofc/appointments-mastering-react-test-driven-development?style=for-the-badge&label=Last%20Commit
+[card-repo-size]: https://img.shields.io/github/repo-size/ruanmoreiraofc/appointments-mastering-react-test-driven-development?style=for-the-badge&label=Repo%20Size
+[card-code-size]: https://img.shields.io/github/languages/code-size/ruanmoreiraofc/appointments-mastering-react-test-driven-development?style=for-the-badge&label=Code%20Size
+[card-license]: https://img.shields.io/github/license/ruanmoreiraofc/appointments-mastering-react-test-driven-development?style=for-the-badge&label=License
+[card-issues]: https://img.shields.io/github/issues/ruanmoreiraofc/appointments-mastering-react-test-driven-development?style=for-the-badge
 
 <!-- *** MAIN BUTTONS *** -->
 
-[btn-book]: https://www.packtpub.com/product/mastering-react-test-driven-development/9781789133417 'Book used as reference'
+[btn-book]: https://www.packtpub.com/product/mastering-react-test-drivenn-development/9781789133417 'Book used as reference'
 [btn-tutor]: https://github.com/dirv "Book's writer"
 [btn-git]: https://git-scm.com
 [btn-node]: https://nodejs.org
@@ -157,11 +157,11 @@ Made with :heart: by Ruan Moreira de Jesus!
 [btn-skip]: #id-preview
 [btn-goto-clone]: #id-clone
 [btn-goto-license]: #id-license
-[btn-goto-issues]: https://github.com/ruanmoreiraofc/appointments-mastering-react-test-drive-development/issues?q=is%3Aopen
+[btn-goto-issues]: https://github.com/ruanmoreiraofc/appointments-mastering-react-test-driven-development/issues?q=is%3Aopen
 
  <!---->
 
-[btn-preview]: https://ruanmoreiraofc.github.io/appointments-mastering-react-test-drive-development
+[btn-preview]: https://ruanmoreiraofc.github.io/appointments-mastering-react-test-driven-development
 [btn-example]: .env.template
 [btn-license]: LICENSE
 
