@@ -26,6 +26,9 @@ const Appointment = ({
         <td>Stylist: </td>
         <td>{stylist}</td>
       </tr>
+      <tr>
+        <td>Service: </td>
+      </tr>
     </tbody>
   </table>
 );
