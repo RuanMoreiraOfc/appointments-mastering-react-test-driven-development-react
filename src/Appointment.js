@@ -33,6 +33,7 @@ const Appointment = ({
       </tr>
       <tr>
         <td>Notes: </td>
+        <td>None</td>
       </tr>
     </tbody>
   </table>
