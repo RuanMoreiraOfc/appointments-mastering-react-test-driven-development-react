@@ -210,4 +210,23 @@ describe('Appointment', () => {
       container.querySelector('tr:nth-child(5) td:nth-child(2)').textContent,
     ).toEqual('None');
   });
+
+  it('renders another customer service', () => {
+    const customer = {
+      notes:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit,' +
+        'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    };
+    const component = <Appointment customer={customer} />;
+    const container = createContainer();
+
+    render(container)(component);
+
+    expect(
+      container.querySelector('tr:nth-child(5) td:nth-child(2)').textContent,
+    ).toEqual(
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit,' +
+        'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    );
+  });
 });
