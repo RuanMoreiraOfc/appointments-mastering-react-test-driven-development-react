@@ -2,7 +2,12 @@ import { useState } from 'react';
 
 export { CustomerForm };
 
-const CustomerForm = ({ firstName, lastName, onSubmit }) => {
+const CustomerForm = ({
+  firstName, //
+  lastName,
+  phoneNumber,
+  onSubmit,
+}) => {
   const [customer, setCustomer] = useState({ firstName, lastName });
 
   const handleTextFieldChange = (field) => (event) =>
@@ -32,6 +37,7 @@ const CustomerForm = ({ firstName, lastName, onSubmit }) => {
       <input
         type='text' //
         name='phoneNumber'
+        defaultValue={phoneNumber}
       />
     </form>
   );
