@@ -14,6 +14,9 @@ describe('AppointmentForm', () => {
     return options.find((option) => option.textContent === textContent);
   };
 
+  const getLabelFrom = (container) => (fieldId) =>
+    container.querySelector(`label[for="${fieldId}"]`);
+
   it('renders a form', () => {
     const component = <AppointmentForm />;
     const { container, render } = createContainer();
@@ -81,6 +84,17 @@ describe('AppointmentForm', () => {
       const field = getAppointmentFormFieldFrom(container)('service');
       const option = findOptionFrom(field)('Blow-dry');
       expect(option.selected).toBeTruthy();
+    });
+
+    it('renders a label', () => {
+      const component = <AppointmentForm />;
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const label = getLabelFrom(container)('service');
+      expect(label).not.toBeNull();
+      expect(label.textContent).toEqual('Service');
     });
   });
 });
