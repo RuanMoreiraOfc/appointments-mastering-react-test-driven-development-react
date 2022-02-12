@@ -1,3 +1,5 @@
+import ReactTestUtils from 'react-dom/test-utils';
+
 import { createContainer } from './utils/domManipulators';
 
 import { CustomerForm } from '../src/CustomerForm';
