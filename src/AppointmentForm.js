@@ -1,3 +1,3 @@
 export { AppointmentForm };
 
-const AppointmentForm = () => null;
+const AppointmentForm = () => <form id='appointment' />;
