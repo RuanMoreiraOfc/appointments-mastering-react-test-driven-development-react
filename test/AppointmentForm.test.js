@@ -1,3 +1,5 @@
+import ReactTestUtils from 'react-dom/test-utils';
+
 import { createContainer } from './utils/domManipulators';
 
 import { AppointmentForm } from '../src/AppointmentForm';
@@ -105,6 +107,24 @@ describe('AppointmentForm', () => {
 
       const field = getAppointmentFormFieldFrom(container)('service');
       expect(field.id).toEqual('service');
+    });
+
+    it('saves existing value when submitted', () => {
+      const selectableServices = ['Cut', 'Blow-dry'];
+      const component = (
+        <AppointmentForm
+          selectableServices={selectableServices}
+          service='Cut'
+          onSubmit={({ service }) => expect(service).toEqual('Cut')}
+        />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+      const form = getFormFrom(container)('appointment');
+      ReactTestUtils.Simulate.submit(form);
+
+      expect.hasAssertions();
     });
   });
 });
