@@ -5,6 +5,7 @@ const AppointmentForm = ({
   service,
 }) => (
   <form id='appointment'>
+    <label htmlFor='service'>Service</label>
     <select
       name='service' //
       defaultValue={service}
