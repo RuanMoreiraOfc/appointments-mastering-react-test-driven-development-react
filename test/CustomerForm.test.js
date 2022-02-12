@@ -147,5 +147,6 @@ describe('CustomerForm', () => {
     itRendersALabel('phoneNumber')('Phone number');
     itAssignsAnIdThatMatchesTheLabelId('phoneNumber');
     itSubmitsExistingValue('phoneNumber')('phoneNumber');
+    itSubmitsNewValue('phoneNumber')('anotherPhoneNumber');
   });
 });
