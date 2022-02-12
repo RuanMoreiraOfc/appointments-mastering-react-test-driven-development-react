@@ -149,4 +149,14 @@ describe('CustomerForm', () => {
     itSubmitsExistingValue('phoneNumber')('phoneNumber');
     itSubmitsNewValue('phoneNumber')('anotherPhoneNumber');
   });
+
+  it('has a submit button', () => {
+    const component = <CustomerForm />;
+    const { container, render } = createContainer();
+
+    render(component);
+
+    const submitButton = container.querySelector('input[type="submit"]');
+    expect(submitButton).not.toBeNull();
+  });
 });
