@@ -1,3 +1,3 @@
 export { CustomerForm };
 
-const CustomerForm = () => null;
+const CustomerForm = () => <form id='customer' />;
