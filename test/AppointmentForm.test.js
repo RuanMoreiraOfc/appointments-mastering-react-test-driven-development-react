@@ -43,5 +43,22 @@ describe('AppointmentForm', () => {
       expect(firstNode.value).toEqual('');
       expect(firstNode.selected).toBeTruthy();
     });
+
+    it('lists all salon services', () => {
+      const selectableServices = ['Cut', 'Blow-dry'];
+      const component = (
+        <AppointmentForm selectableServices={selectableServices} />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const field = getAppointmentFormFieldFrom(container)('service');
+      const optionNodes = Array.from(field.childNodes);
+      const renderedServices = optionNodes.map((node) => node.textContent);
+      expect(renderedServices).toEqual(
+        expect.arrayContaining(selectableServices),
+      );
+    });
   });
 });
