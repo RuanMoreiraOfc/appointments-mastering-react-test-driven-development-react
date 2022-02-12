@@ -137,5 +137,6 @@ describe('CustomerForm', () => {
     itIncludesTheExistingValue('lastName');
     itRendersALabel('lastName')('Last name');
     itAssignsAnIdThatMatchesTheLabelId('lastName');
+    itSubmitsExistingValue('lastName')('lastName');
   });
 });
