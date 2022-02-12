@@ -144,5 +144,6 @@ describe('CustomerForm', () => {
   describe('phone number field', () => {
     itRendersAsATextBox('phoneNumber');
     itIncludesTheExistingValue('phoneNumber');
+    itRendersALabel('phoneNumber')('Phone number');
   });
 });
