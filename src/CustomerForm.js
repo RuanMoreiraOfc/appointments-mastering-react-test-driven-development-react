@@ -36,7 +36,8 @@ const CustomerForm = ({
       />
       <label htmlFor='phoneNumber'>Phone number</label>
       <input
-        type='text' //
+        id='phoneNumber'
+        type='text'
         name='phoneNumber'
         defaultValue={phoneNumber}
       />
