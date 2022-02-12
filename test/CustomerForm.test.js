@@ -16,6 +16,12 @@ describe('CustomerForm', () => {
     expect(form).not.toBeNull();
   });
 
+  const expectToBeInputFieldOfTypeText = (field) => {
+    expect(field).toBeTruthy();
+    expect(field.tagName).toEqual('INPUT');
+    expect(field.type).toEqual('text');
+  };
+
   it('renders the first name field as a text box', () => {
     const component = <CustomerForm />;
     const { container, render } = createContainer();
@@ -24,8 +30,6 @@ describe('CustomerForm', () => {
 
     const form = getFormFrom(container)('customer');
     const field = form.elements.firstName;
-    expect(field).toBeTruthy();
-    expect(field.tagName).toEqual('INPUT');
-    expect(field.type).toEqual('text');
+    expectToBeInputFieldOfTypeText(field);
   });
 });
