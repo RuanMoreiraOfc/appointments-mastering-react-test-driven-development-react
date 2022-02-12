@@ -71,4 +71,40 @@ describe('CustomerForm', () => {
     const field = getCustomerFormFieldFrom(container)('firstName');
     expect(field.id).toEqual('firstName');
   });
+
+  it('saves existing first name when submitted', () => {
+    const component = (
+      <CustomerForm
+        firstName='Ashley'
+        onSubmit={({ firstName }) => expect(firstName).toEqual('Ashley')}
+      />
+    );
+    const { container, render } = createContainer();
+
+    render(component);
+    const form = getFormFrom(container)('customer');
+    ReactTestUtils.Simulate.submit(form);
+
+    expect.hasAssertions();
+  });
+
+  it('saves new first name when submitted', () => {
+    const component = (
+      <CustomerForm
+        firstName='Ashley'
+        onSubmit={({ firstName }) => expect(firstName).toEqual('Jamie')}
+      />
+    );
+    const { container, render } = createContainer();
+
+    render(component);
+    const field = getCustomerFormFieldFrom(container)('firstName');
+    const form = field.form;
+    ReactTestUtils.Simulate.change(field, {
+      target: { value: 'Jamie' },
+    });
+    ReactTestUtils.Simulate.submit(form);
+
+    expect.hasAssertions();
+  });
 });
