@@ -140,4 +140,8 @@ describe('CustomerForm', () => {
     itSubmitsExistingValue('lastName')('lastName');
     itSubmitsNewValue('lastName')('anotherLastName');
   });
+
+  describe('phone number field', () => {
+    itRendersAsATextBox('phoneNumber');
+  });
 });
