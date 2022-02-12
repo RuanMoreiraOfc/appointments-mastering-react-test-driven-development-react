@@ -34,6 +34,7 @@ const CustomerForm = ({
         defaultValue={lastName}
         onChange={handleTextFieldChange('lastName')}
       />
+      <label htmlFor='phoneNumber'>Phone number</label>
       <input
         type='text' //
         name='phoneNumber'
