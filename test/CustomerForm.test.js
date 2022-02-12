@@ -32,4 +32,16 @@ describe('CustomerForm', () => {
     const field = form.elements.firstName;
     expectToBeInputFieldOfTypeText(field);
   });
+
+  it('includes the existing value for the first name', () => {
+    const firstName = 'Ashley';
+    const component = <CustomerForm firstName={firstName} />;
+    const { container, render } = createContainer();
+
+    render(component);
+
+    const form = getFormFrom(container)('customer');
+    const field = form.elements.firstName;
+    expect(field.defaultValue).toEqual('Ashley');
+  });
 });
