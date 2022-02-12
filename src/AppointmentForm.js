@@ -7,7 +7,8 @@ const AppointmentForm = ({
   <form id='appointment'>
     <label htmlFor='service'>Service</label>
     <select
-      name='service' //
+      id='service' //
+      name='service'
       defaultValue={service}
     >
       <option />
