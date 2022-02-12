@@ -44,6 +44,7 @@ const CustomerForm = ({
         type='text'
         name='phoneNumber'
         defaultValue={phoneNumber}
+        onChange={handleTextFieldChange('phoneNumber')}
       />
     </form>
   );
