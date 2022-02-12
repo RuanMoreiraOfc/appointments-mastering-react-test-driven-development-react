@@ -23,7 +23,8 @@ const CustomerForm = ({ firstName, lastName, onSubmit }) => {
       />
       <label htmlFor='lastName'>Last name</label>
       <input
-        type='text' //
+        id='lastName'
+        type='text'
         name='lastName'
         defaultValue={lastName}
       />
