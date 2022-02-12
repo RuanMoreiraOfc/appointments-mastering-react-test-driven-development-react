@@ -6,6 +6,9 @@ describe('CustomerForm', () => {
   const getFormFrom = (container) => (id) =>
     container.querySelector(`form[id="${id}"]`);
 
+  const getCustomerFormFieldFrom = (container) => (field) =>
+    getFormFrom(container)('customer').elements[field];
+
   it('renders a form', () => {
     const component = <CustomerForm />;
     const { container, render } = createContainer();
@@ -28,8 +31,7 @@ describe('CustomerForm', () => {
 
     render(component);
 
-    const form = getFormFrom(container)('customer');
-    const field = form.elements.firstName;
+    const field = getCustomerFormFieldFrom(container)('firstName');
     expectToBeInputFieldOfTypeText(field);
   });
 
@@ -40,8 +42,7 @@ describe('CustomerForm', () => {
 
     render(component);
 
-    const form = getFormFrom(container)('customer');
-    const field = form.elements.firstName;
+    const field = getCustomerFormFieldFrom(container)('firstName');
     expect(field.defaultValue).toEqual('Ashley');
   });
 });
