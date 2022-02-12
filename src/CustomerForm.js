@@ -8,7 +8,11 @@ const CustomerForm = ({
   phoneNumber,
   onSubmit,
 }) => {
-  const [customer, setCustomer] = useState({ firstName, lastName });
+  const [customer, setCustomer] = useState({
+    firstName,
+    lastName,
+    phoneNumber,
+  });
 
   const handleTextFieldChange = (field) => (event) =>
     setCustomer((oldState) => ({
