@@ -131,4 +131,8 @@ describe('CustomerForm', () => {
     itSubmitsExistingValue('firstName')('firstName');
     itSubmitsNewValue('firstName')('anotherFirstName');
   });
+
+  describe('last name field', () => {
+    itRendersAsATextBox('lastName');
+  });
 });
