@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 export { CustomerForm };
 
-const CustomerForm = ({ firstName, onSubmit }) => {
+const CustomerForm = ({ firstName, lastName, onSubmit }) => {
   const [customer, setCustomer] = useState({ firstName });
 
   const handleTextFieldChange = (field) => (event) =>
@@ -24,6 +24,7 @@ const CustomerForm = ({ firstName, onSubmit }) => {
       <input
         type='text' //
         name='lastName'
+        defaultValue={lastName}
       />
     </form>
   );
