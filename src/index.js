@@ -1,6 +1,5 @@
 import { sampleAppointments } from './sampleData';
 
-import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { AppointmentsDayView } from './AppointmentsDayView';

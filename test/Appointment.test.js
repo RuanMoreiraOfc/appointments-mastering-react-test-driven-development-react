@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { createContainer } from './utils/domManipulators';
 
 import { Appointment } from '../src/Appointment';
