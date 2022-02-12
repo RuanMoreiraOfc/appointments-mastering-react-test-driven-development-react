@@ -145,5 +145,6 @@ describe('CustomerForm', () => {
     itRendersAsATextBox('phoneNumber');
     itIncludesTheExistingValue('phoneNumber');
     itRendersALabel('phoneNumber')('Phone number');
+    itAssignsAnIdThatMatchesTheLabelId('phoneNumber');
   });
 });
