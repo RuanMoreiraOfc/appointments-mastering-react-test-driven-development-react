@@ -59,4 +59,14 @@ describe('CustomerForm', () => {
     expect(label).not.toBeNull();
     expect(label.textContent).toEqual('First name');
   });
+
+  it('assigns an id that matches the label id to the first name field', () => {
+    const component = <CustomerForm />;
+    const { container, render } = createContainer();
+
+    render(component);
+
+    const field = getCustomerFormFieldFrom(container)('firstName');
+    expect(field.id).toEqual('firstName');
+  });
 });
