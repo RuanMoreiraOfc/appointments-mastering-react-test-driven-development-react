@@ -1,20 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+
+import { createContainer } from './utils/domManipulators';
 
 import { Appointment } from '../src/Appointment';
 
 describe('Appointment', () => {
-  const createContainer = () => document.createElement('div');
-
-  const render = (container) => (component) =>
-    ReactDOM.render(component, container);
-
   it('renders the customer first name', () => {
     const customer = { firstName: 'Ashley' };
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(container.textContent).toMatch('Ashley');
   });
@@ -22,9 +18,9 @@ describe('Appointment', () => {
   it('renders another customer first name', () => {
     const customer = { firstName: 'Jordan' };
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(container.textContent).toMatch('Jordan');
   });
@@ -32,9 +28,9 @@ describe('Appointment', () => {
   it('renders the customer last name', () => {
     const customer = { firstName: 'Ashley', lastName: 'Garcia' };
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(container.textContent).toMatch('Ashley Garcia');
   });
@@ -42,9 +38,9 @@ describe('Appointment', () => {
   it('renders another customer last name', () => {
     const customer = { firstName: 'Jordan', lastName: 'Brown' };
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(container.textContent).toMatch('Jordan Brown');
   });
@@ -52,9 +48,9 @@ describe('Appointment', () => {
   it('renders customer label', () => {
     const customer = { firstName: 'Ashley', lastName: 'Garcia' };
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(container.textContent).toMatch('Customer: Ashley Garcia');
   });
@@ -62,9 +58,9 @@ describe('Appointment', () => {
   it('renders in a table element', () => {
     const customer = {};
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(container.firstElementChild.tagName).toEqual('TABLE');
   });
@@ -72,9 +68,9 @@ describe('Appointment', () => {
   it('renders label in a separated td', () => {
     const customer = {};
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(container.querySelector('td').textContent).toEqual('Customer: ');
   });
@@ -82,9 +78,9 @@ describe('Appointment', () => {
   it('renders phone number label', () => {
     const customer = {};
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(container.querySelector('tr:nth-child(2) td').textContent).toEqual(
       'Phone number: ',
@@ -94,9 +90,9 @@ describe('Appointment', () => {
   it('renders customer phone number', () => {
     const customer = { phoneNumber: '(111) 222-3333' };
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(
       container.querySelector('tr:nth-child(2) td:nth-child(2)').textContent,
@@ -106,9 +102,9 @@ describe('Appointment', () => {
   it('renders another customer phone number', () => {
     const customer = { phoneNumber: '(222) 333-4444' };
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(
       container.querySelector('tr:nth-child(2) td:nth-child(2)').textContent,
@@ -118,9 +114,9 @@ describe('Appointment', () => {
   it('renders stylist label', () => {
     const customer = {};
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(container.querySelector('tr:nth-child(3) td').textContent).toEqual(
       'Stylist: ',
@@ -130,9 +126,9 @@ describe('Appointment', () => {
   it('renders customer stylist', () => {
     const customer = { stylist: 'Mario' };
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(
       container.querySelector('tr:nth-child(3) td:nth-child(2)').textContent,
@@ -142,9 +138,9 @@ describe('Appointment', () => {
   it('renders another customer stylist', () => {
     const customer = { stylist: 'Zack' };
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(
       container.querySelector('tr:nth-child(3) td:nth-child(2)').textContent,
@@ -154,9 +150,9 @@ describe('Appointment', () => {
   it('renders service label', () => {
     const customer = {};
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(container.querySelector('tr:nth-child(4) td').textContent).toEqual(
       'Service: ',
@@ -166,9 +162,9 @@ describe('Appointment', () => {
   it('renders customer service', () => {
     const customer = { service: 'Cut' };
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(
       container.querySelector('tr:nth-child(4) td:nth-child(2)').textContent,
@@ -178,9 +174,9 @@ describe('Appointment', () => {
   it('renders another customer service', () => {
     const customer = { service: 'Beard trim' };
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(
       container.querySelector('tr:nth-child(4) td:nth-child(2)').textContent,
@@ -190,9 +186,9 @@ describe('Appointment', () => {
   it('renders notes label', () => {
     const customer = {};
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(container.querySelector('tr:nth-child(5) td').textContent).toEqual(
       'Notes: ',
@@ -202,9 +198,9 @@ describe('Appointment', () => {
   it('renders customer notes', () => {
     const customer = { notes: 'None' };
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(
       container.querySelector('tr:nth-child(5) td:nth-child(2)').textContent,
@@ -218,9 +214,9 @@ describe('Appointment', () => {
         'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     };
     const component = <Appointment customer={customer} />;
-    const container = createContainer();
+    const { container, render } = createContainer();
 
-    render(container)(component);
+    render(component);
 
     expect(
       container.querySelector('tr:nth-child(5) td:nth-child(2)').textContent,
