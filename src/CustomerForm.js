@@ -3,7 +3,7 @@ import { useState } from 'react';
 export { CustomerForm };
 
 const CustomerForm = ({ firstName, lastName, onSubmit }) => {
-  const [customer, setCustomer] = useState({ firstName });
+  const [customer, setCustomer] = useState({ firstName, lastName });
 
   const handleTextFieldChange = (field) => (event) =>
     setCustomer((oldState) => ({
