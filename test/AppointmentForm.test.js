@@ -6,6 +6,9 @@ describe('AppointmentForm', () => {
   const getFormFrom = (container) => (id) =>
     container.querySelector(`form[id="${id}"]`);
 
+  const getAppointmentFormFieldFrom = (container) => (field) =>
+    getFormFrom(container)('appointment').elements[field];
+
   it('renders a form', () => {
     const component = <AppointmentForm />;
     const { container, render } = createContainer();
@@ -23,9 +26,9 @@ describe('AppointmentForm', () => {
 
       render(component);
 
-      const form = getFormFrom(container)('appointment');
-      expect(form.elements.service).toBeTruthy();
-      expect(form.elements.service.tagName).toEqual('SELECT');
+      const field = getAppointmentFormFieldFrom(container)('service');
+      expect(field).toBeTruthy();
+      expect(field.tagName).toEqual('SELECT');
     });
   });
 });
