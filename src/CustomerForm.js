@@ -27,6 +27,7 @@ const CustomerForm = ({ firstName, lastName, onSubmit }) => {
         type='text'
         name='lastName'
         defaultValue={lastName}
+        onChange={handleTextFieldChange('lastName')}
       />
     </form>
   );
