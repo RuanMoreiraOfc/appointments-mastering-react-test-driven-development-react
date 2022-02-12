@@ -3,8 +3,9 @@ export { AppointmentForm };
 const AppointmentForm = ({
   selectableServices, //
   service,
+  onSubmit,
 }) => (
-  <form id='appointment'>
+  <form id='appointment' onSubmit={() => onSubmit({ service })}>
     <label htmlFor='service'>Service</label>
     <select
       id='service' //
