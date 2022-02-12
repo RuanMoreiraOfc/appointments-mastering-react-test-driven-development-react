@@ -9,6 +9,9 @@ describe('CustomerForm', () => {
   const getCustomerFormFieldFrom = (container) => (field) =>
     getFormFrom(container)('customer').elements[field];
 
+  const getLabelFrom = (container) => (fieldId) =>
+    container.querySelector(`label[for="${fieldId}"]`);
+
   it('renders a form', () => {
     const component = <CustomerForm />;
     const { container, render } = createContainer();
@@ -44,5 +47,16 @@ describe('CustomerForm', () => {
 
     const field = getCustomerFormFieldFrom(container)('firstName');
     expect(field.defaultValue).toEqual('Ashley');
+  });
+
+  it('renders a label for the first name field', () => {
+    const component = <CustomerForm />;
+    const { container, render } = createContainer();
+
+    render(component);
+
+    const label = getLabelFrom(container)('firstName');
+    expect(label).not.toBeNull();
+    expect(label.textContent).toEqual('First name');
   });
 });
