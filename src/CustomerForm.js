@@ -1,7 +1,9 @@
+import { useState } from 'react';
+
 export { CustomerForm };
 
 const CustomerForm = ({ firstName, onSubmit }) => {
-  const customer = { firstName };
+  const [customer, setCustomer] = useState({ firstName });
 
   return (
     <form id='customer' onSubmit={() => onSubmit(customer)}>
@@ -11,6 +13,9 @@ const CustomerForm = ({ firstName, onSubmit }) => {
         type='text'
         name='firstName'
         defaultValue={firstName}
+        onChange={({ target: { value } }) =>
+          setCustomer((oldState) => ({ ...oldState, firstName: value }))
+        }
       />
     </form>
   );
