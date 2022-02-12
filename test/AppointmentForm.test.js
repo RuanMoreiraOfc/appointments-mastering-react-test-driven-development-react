@@ -126,5 +126,27 @@ describe('AppointmentForm', () => {
 
       expect.hasAssertions();
     });
+
+    it('saves new value when submitted', () => {
+      const selectableServices = ['Cut', 'Blow-dry'];
+      const component = (
+        <AppointmentForm
+          selectableServices={selectableServices}
+          service='Cut'
+          onSubmit={({ service }) => expect(service).toEqual('Blow-dry')}
+        />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+      const field = getAppointmentFormFieldFrom(container)('service');
+      const form = field.form;
+      ReactTestUtils.Simulate.change(field, {
+        target: { value: 'Blow-dry' },
+      });
+      ReactTestUtils.Simulate.submit(form);
+
+      expect.hasAssertions();
+    });
   });
 });
