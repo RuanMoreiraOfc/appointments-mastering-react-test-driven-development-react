@@ -11,6 +11,9 @@ const sampleAppointments = [
       firstName: 'Charlie',
       lastName: 'Smith',
       phoneNumber: '(111) 222-3333',
+      stylist: 'Maggie',
+      service: 'Cut',
+      notes: 'Do not use a hair clipper',
     },
   },
   {
@@ -19,6 +22,9 @@ const sampleAppointments = [
       firstName: 'Frankie',
       lastName: 'Lee',
       phoneNumber: '(222) 333-4444',
+      stylist: 'Mario',
+      service: 'Beard trim',
+      notes: 'None',
     },
   },
   {
@@ -27,6 +33,9 @@ const sampleAppointments = [
       firstName: 'Casey',
       lastName: 'Taylor',
       phoneNumber: '(333) 444-5555',
+      stylist: 'Bruna',
+      service: 'Dye',
+      notes: 'Customer with oily hair',
     },
   },
   {
@@ -35,6 +44,9 @@ const sampleAppointments = [
       firstName: 'Ashley',
       lastName: 'Garcia',
       phoneNumber: '(444) 555-6666',
+      stylist: 'Mark',
+      service: 'Dye',
+      notes: 'Purple color',
     },
   },
   {
@@ -43,6 +55,9 @@ const sampleAppointments = [
       firstName: 'Jordan',
       lastName: 'Brown',
       phoneNumber: '(555) 666-7777',
+      stylist: 'Julia',
+      service: 'Beard dye',
+      notes: 'Gray-haired color',
     },
   },
   {
@@ -51,6 +66,9 @@ const sampleAppointments = [
       firstName: 'Jay',
       lastName: 'Perez',
       phoneNumber: '(666) 777-8888',
+      stylist: 'Marcia',
+      service: 'Cut',
+      notes: 'Use only hair clipper',
     },
   },
   {
@@ -59,6 +77,9 @@ const sampleAppointments = [
       firstName: 'Alex',
       lastName: 'Martinez',
       phoneNumber: '(888) 999-1111',
+      stylist: 'John',
+      service: 'Beard trim',
+      notes: 'Do no use a hair clipper',
     },
   },
   {
@@ -67,6 +88,9 @@ const sampleAppointments = [
       firstName: 'Jules',
       lastName: 'Gonzalez',
       phoneNumber: '(999) 111-2222',
+      stylist: 'Marta',
+      service: 'Cut',
+      notes: 'None',
     },
   },
   {
@@ -75,6 +99,9 @@ const sampleAppointments = [
       firstName: 'Stevie',
       lastName: 'Jackson',
       phoneNumber: '(888) 111-2222',
+      stylist: 'Michael',
+      service: 'Dye',
+      notes: 'Red color',
     },
   },
 ];
