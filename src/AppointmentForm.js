@@ -1,8 +1,14 @@
 export { AppointmentForm };
 
-const AppointmentForm = ({ selectableServices }) => (
+const AppointmentForm = ({
+  selectableServices, //
+  service,
+}) => (
   <form id='appointment'>
-    <select name='service'>
+    <select
+      name='service' //
+      defaultValue={service}
+    >
       <option />
       {selectableServices.map((service) => (
         <option key={service}>{service}</option>
