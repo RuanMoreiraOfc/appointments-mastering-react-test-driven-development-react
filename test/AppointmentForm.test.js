@@ -149,4 +149,15 @@ describe('AppointmentForm', () => {
       expect.hasAssertions();
     });
   });
+
+  describe('time slot table', () => {
+    it('renders a table for time slots', () => {
+      const component = <AppointmentForm />;
+      const { container, render } = createContainer();
+
+      render(component);
+
+      expect(container.querySelector('table#time-slots')).not.toBeNull();
+    });
+  });
 });
