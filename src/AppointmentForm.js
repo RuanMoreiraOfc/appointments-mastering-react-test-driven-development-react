@@ -25,6 +25,7 @@ const AppointmentForm = ({
           <option key={service}>{service}</option>
         ))}
       </select>
+      <TimeSlotTable />
     </form>
   );
 };
@@ -39,3 +40,5 @@ AppointmentForm.defaultProps = {
     'Extensions',
   ],
 };
+
+const TimeSlotTable = () => <table id='time-slots' />;
