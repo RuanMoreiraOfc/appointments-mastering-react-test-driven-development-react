@@ -19,6 +19,9 @@ describe('AppointmentForm', () => {
   const getLabelFrom = (container) => (fieldId) =>
     container.querySelector(`label[for="${fieldId}"]`);
 
+  const getTimeSlotTable = (container) =>
+    container.querySelector('table#time-slots');
+
   it('renders a form', () => {
     const component = <AppointmentForm />;
     const { container, render } = createContainer();
@@ -157,7 +160,8 @@ describe('AppointmentForm', () => {
 
       render(component);
 
-      expect(container.querySelector('table#time-slots')).not.toBeNull();
+      const table = getTimeSlotTable(container);
+      expect(table).not.toBeNull();
     });
   });
 });
