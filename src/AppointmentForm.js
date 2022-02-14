@@ -64,16 +64,16 @@ const TimeSlotTable = ({ salonOpensAt, salonClosesAt, today }) => {
       <thead>
         <tr>
           <th />
-          {dateSlots.map((dateAsString) => (
+          {dateSlots.map(({ dateAsString }) => (
             <th key={dateAsString}>{dateAsString}</th>
           ))}
         </tr>
       </thead>
       <tbody>
-        {timeSlots.map((timeAsString) => (
+        {timeSlots.map(({ timeAsString }) => (
           <tr key={timeAsString}>
             <th>{timeAsString}</th>
-            {dateSlots.map((dateAsString) => (
+            {dateSlots.map(({ dateAsString }) => (
               <td key={dateAsString}>
                 <input type='radio' />
               </td>
@@ -103,7 +103,7 @@ const createTimeSlots = ({
       minute: '2-digit',
     });
 
-    return timeAsString;
+    return { time, timeAsString };
   });
 
   return result;
@@ -122,7 +122,7 @@ const createDateSlots = ({ startDate }) => {
       day: '2-digit',
     });
 
-    return dateAsString;
+    return { date, dateAsString };
   });
 
   return result;
