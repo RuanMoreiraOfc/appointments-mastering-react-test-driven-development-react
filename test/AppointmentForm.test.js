@@ -267,5 +267,27 @@ describe('AppointmentForm', () => {
         availableTimeSlots[1].startsAt.toString(),
       );
     });
+
+    it('includes the existing value', () => {
+      const today = new Date();
+      const availableTimeSlots = [
+        { startsAt: today.setHours(9, 0, 0, 0) },
+        { startsAt: today.setHours(9, 30, 0, 0) },
+      ];
+      const component = (
+        <AppointmentForm
+          availableTimeSlots={availableTimeSlots}
+          today={today}
+          startsAt={availableTimeSlots[0].startsAt}
+        />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const fields = getStartsAtList(container);
+      expect(fields[0]).toBeTruthy();
+      expect(fields[0].defaultChecked).toEqual(true);
+    });
   });
 });
