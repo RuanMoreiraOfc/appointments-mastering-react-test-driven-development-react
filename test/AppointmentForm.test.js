@@ -190,5 +190,20 @@ describe('AppointmentForm', () => {
       expect(headerRow.firstChild).not.toBeNull();
       expect(headerRow.firstChild.textContent).toEqual('');
     });
+
+    it('renders a week of available dates', () => {
+      const today = new Date(2022, 2, 13);
+      const component = <AppointmentForm today={today} />;
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const table = getTimeSlotTable(container);
+      const dates = table.querySelectorAll('thead th:not(:first-child)');
+      expect(dates).toHaveLength(7);
+      expect(dates[0].textContent).toEqual('Sun 13');
+      expect(dates[1].textContent).toEqual('Mon 14');
+      expect(dates[6].textContent).toEqual('Sat 19');
+    });
   });
 });
