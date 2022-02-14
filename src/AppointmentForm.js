@@ -83,16 +83,11 @@ const TimeSlotTable = ({
             <th>{timeAsString}</th>
             {dateSlots.map(({ date, dateAsString }) => (
               <td key={dateAsString}>
-                {availableTimeSlots.some(
-                  (availableTimeSlot) =>
-                    availableTimeSlot.startsAt ===
-                    mergeDateAndTime({
-                      dateInMilliseconds: date,
-                      timeInMilliseconds: time,
-                    }),
-                ) ? (
-                  <input type='radio' name='startsAt' value={time} />
-                ) : null}
+                <RadioButtonIfAvailable
+                  availableTimeSlots={availableTimeSlots}
+                  dateInMilliseconds={date}
+                  timeInMilliseconds={time}
+                />
               </td>
             ))}
           </tr>
@@ -155,4 +150,22 @@ const mergeDateAndTime = ({ dateInMilliseconds, timeInMilliseconds }) => {
   );
 
   return result;
+};
+
+const RadioButtonIfAvailable = ({
+  availableTimeSlots,
+  dateInMilliseconds,
+  timeInMilliseconds,
+}) => {
+  const startsAt = mergeDateAndTime({ dateInMilliseconds, timeInMilliseconds });
+  if (
+    false ===
+    availableTimeSlots.some(
+      (availableTimeSlot) => availableTimeSlot.startsAt === startsAt,
+    )
+  ) {
+    return null;
+  }
+
+  return <input name='startsAt' type='radio' value={startsAt} />;
 };
