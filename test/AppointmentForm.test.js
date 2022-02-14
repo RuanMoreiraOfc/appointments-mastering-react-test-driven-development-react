@@ -177,5 +177,18 @@ describe('AppointmentForm', () => {
       expect(timesOfDay[1].textContent).toEqual('09:30');
       expect(timesOfDay[3].textContent).toEqual('10:30');
     });
+
+    it('renders an empty cell at the start of the header row', () => {
+      const component = <AppointmentForm />;
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const table = getTimeSlotTable(container);
+      const headerRow = table.querySelector('thead > tr');
+      expect(headerRow).not.toBeNull();
+      expect(headerRow.firstChild).not.toBeNull();
+      expect(headerRow.firstChild.textContent).toEqual('');
+    });
   });
 });
