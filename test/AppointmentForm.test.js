@@ -163,5 +163,19 @@ describe('AppointmentForm', () => {
       const table = getTimeSlotTable(container);
       expect(table).not.toBeNull();
     });
+
+    it('renders a time slot for every half an hour between open and close times', () => {
+      const component = <AppointmentForm salonOpensAt={9} salonClosesAt={11} />;
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const table = getTimeSlotTable(container);
+      const timesOfDay = table.querySelectorAll('tbody th');
+      expect(timesOfDay).toHaveLength(4);
+      expect(timesOfDay[0].textContent).toEqual('09:00');
+      expect(timesOfDay[1].textContent).toEqual('09:30');
+      expect(timesOfDay[3].textContent).toEqual('10:30');
+    });
   });
 });
