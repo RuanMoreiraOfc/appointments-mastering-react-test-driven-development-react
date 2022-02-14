@@ -91,7 +91,7 @@ const TimeSlotTable = ({
                       timeInMilliseconds: time,
                     }),
                 ) ? (
-                  <input type='radio' />
+                  <input type='radio' name='startsAt' value={time} />
                 ) : null}
               </td>
             ))}
