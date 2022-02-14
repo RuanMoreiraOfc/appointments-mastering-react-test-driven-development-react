@@ -289,5 +289,38 @@ describe('AppointmentForm', () => {
       expect(fields[0]).toBeTruthy();
       expect(fields[0].defaultChecked).toEqual(true);
     });
+
+    it('saves new value when submitted', () => {
+      const today = new Date();
+      const availableTimeSlots = [
+        { startsAt: today.setHours(9, 0, 0, 0) },
+        { startsAt: today.setHours(9, 30, 0, 0) },
+      ];
+      const component = (
+        <AppointmentForm
+          availableTimeSlots={availableTimeSlots}
+          today={today}
+          startsAt={availableTimeSlots[0].startsAt}
+          onSubmit={({ startsAt }) => {
+            expect(startsAt).toEqual(availableTimeSlots[1].startsAt);
+            const fields = getStartsAtList(container);
+            expect(fields[0].checked).toEqual(false);
+          }}
+        />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+      const fields = getStartsAtList(container);
+      ReactTestUtils.Simulate.change(fields[1], {
+        target: {
+          value: String(availableTimeSlots[1].startsAt),
+        },
+      });
+      const form = getFormFrom(container)('appointment');
+      ReactTestUtils.Simulate.submit(form);
+
+      expect.hasAssertions();
+    });
   });
 });
