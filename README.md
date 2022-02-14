@@ -87,6 +87,16 @@ yarn
 yarn test
 ```
 
+<small>using `yarn test:dev <file-path>` will re-test the chosen file without re-running the command.</small>
+
+###### - to run the server
+
+```bash
+yarn dev
+```
+
+<small>with the server open, you will be able to see the application on [localhost][btn-localhost].</small>
+
 ## :balance_scale: License <span id="id-license"/>
 
 This project is under the MIT license. See the [LICENSE][btn-license] for more information.
@@ -164,6 +174,7 @@ Made with :heart: by Ruan Moreira de Jesus!
 [btn-preview]: https://ruanmoreiraofc.github.io/appointments-mastering-react-test-driven-development
 [btn-example]: .env.template
 [btn-license]: LICENSE
+[btn-localhost]: http://localhost:3000
 
 <!-- *** TECHNOLOGY *** -->
 
