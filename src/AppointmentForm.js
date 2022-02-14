@@ -57,6 +57,11 @@ const TimeSlotTable = ({ salonOpensAt, salonClosesAt }) => {
 
   return (
     <table id='time-slots'>
+      <thead>
+        <tr>
+          <th />
+        </tr>
+      </thead>
       <tbody>
         {timeSlots.map((timeAsString) => (
           <tr key={timeAsString}>
