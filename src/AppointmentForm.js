@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 export { AppointmentForm };
 
@@ -13,6 +13,15 @@ const AppointmentForm = ({
   startsAt,
 }) => {
   const [appointment, setAppointment] = useState({ service, startsAt });
+
+  const handleStartsAtChange = useCallback(
+    ({ target: { value } }) =>
+      setAppointment((appointment) => ({
+        ...appointment,
+        startsAt: Number(value),
+      })),
+    [],
+  );
 
   return (
     <form id='appointment' onSubmit={() => onSubmit(appointment)}>
@@ -36,6 +45,7 @@ const AppointmentForm = ({
         today={today}
         availableTimeSlots={availableTimeSlots}
         checkedTimeSlot={appointment.startsAt}
+        handleChange={handleStartsAtChange}
       />
     </form>
   );
@@ -62,6 +72,7 @@ const TimeSlotTable = ({
   today,
   availableTimeSlots,
   checkedTimeSlot,
+  handleChange,
 }) => {
   const dateSlots = createDateSlots({ startDate: today });
   const timeSlots = createTimeSlots({
@@ -91,6 +102,7 @@ const TimeSlotTable = ({
                   dateInMilliseconds={date}
                   timeInMilliseconds={time}
                   checkedTimeSlot={checkedTimeSlot}
+                  handleChange={handleChange}
                 />
               </td>
             ))}
@@ -161,6 +173,7 @@ const RadioButtonIfAvailable = ({
   dateInMilliseconds,
   timeInMilliseconds,
   checkedTimeSlot,
+  handleChange,
 }) => {
   const startsAt = mergeDateAndTime({ dateInMilliseconds, timeInMilliseconds });
   if (
@@ -179,7 +192,7 @@ const RadioButtonIfAvailable = ({
       type='radio'
       value={startsAt}
       checked={isChecked}
-      readOnly
+      onChange={handleChange}
     />
   );
 };
