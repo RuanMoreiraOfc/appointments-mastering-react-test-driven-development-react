@@ -22,6 +22,9 @@ describe('AppointmentForm', () => {
   const getTimeSlotTable = (container) =>
     container.querySelector('table#time-slots');
 
+  const getStartsAtList = (container) =>
+    container.querySelectorAll(`input[name="startsAt"]`);
+
   it('renders a form', () => {
     const component = <AppointmentForm />;
     const { container, render } = createContainer();
@@ -238,6 +241,31 @@ describe('AppointmentForm', () => {
       const table = getTimeSlotTable(container);
       const timesOfDay = table.querySelectorAll('input');
       expect(timesOfDay).toHaveLength(0);
+    });
+
+    it('sets radio button values to the index of the corresponding appointment', () => {
+      const today = new Date();
+      const availableTimeSlots = [
+        { startsAt: today.setHours(9, 0, 0, 0) },
+        { startsAt: today.setHours(9, 30, 0, 0) },
+      ];
+      const component = (
+        <AppointmentForm
+          availableTimeSlots={availableTimeSlots}
+          today={today}
+        />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const fields = getStartsAtList(container);
+      expect(fields[0].value).toEqual(
+        availableTimeSlots[0].startsAt.toString(),
+      );
+      expect(fields[1].value).toEqual(
+        availableTimeSlots[1].startsAt.toString(),
+      );
     });
   });
 });
