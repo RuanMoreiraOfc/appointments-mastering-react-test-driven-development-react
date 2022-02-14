@@ -8,6 +8,7 @@ const AppointmentForm = ({
   onSubmit,
   salonOpensAt,
   salonClosesAt,
+  today,
 }) => {
   const [appointment, setAppointment] = useState({ service });
 
@@ -30,6 +31,7 @@ const AppointmentForm = ({
       <TimeSlotTable
         salonOpensAt={salonOpensAt}
         salonClosesAt={salonClosesAt}
+        today={today}
       />
     </form>
   );
@@ -46,9 +48,11 @@ AppointmentForm.defaultProps = {
   ],
   salonOpensAt: 9,
   salonClosesAt: 19,
+  today: new Date(),
 };
 
-const TimeSlotTable = ({ salonOpensAt, salonClosesAt }) => {
+const TimeSlotTable = ({ salonOpensAt, salonClosesAt, today }) => {
+  const dateSlots = createDateSlots({ startDate: today });
   const timeSlots = createTimeSlots({
     intervalInMinutes: 30,
     salonOpensAt,
@@ -60,6 +64,9 @@ const TimeSlotTable = ({ salonOpensAt, salonClosesAt }) => {
       <thead>
         <tr>
           <th />
+          {dateSlots.map((dateAsString) => (
+            <th key={dateAsString}>{dateAsString}</th>
+          ))}
         </tr>
       </thead>
       <tbody>
@@ -92,6 +99,25 @@ const createTimeSlots = ({
     });
 
     return timeAsString;
+  });
+
+  return result;
+};
+
+const createDateSlots = ({ startDate }) => {
+  const initialDate = new Date(startDate).setHours(0, 0, 0, 0);
+
+  const intervalCountBySlot = 7;
+  const intervalInMilliseconds = 24 * 60 * 60 * 1000;
+
+  const result = Array.from({ length: intervalCountBySlot }, (_, i) => {
+    const date = initialDate + intervalInMilliseconds * i;
+    const dateAsString = new Date(date).toLocaleDateString(['en-GB'], {
+      weekday: 'short',
+      day: '2-digit',
+    });
+
+    return dateAsString;
   });
 
   return result;
