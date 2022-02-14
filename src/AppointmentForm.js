@@ -9,6 +9,7 @@ const AppointmentForm = ({
   salonOpensAt,
   salonClosesAt,
   today,
+  availableTimeSlots,
 }) => {
   const [appointment, setAppointment] = useState({ service });
 
@@ -32,6 +33,7 @@ const AppointmentForm = ({
         salonOpensAt={salonOpensAt}
         salonClosesAt={salonClosesAt}
         today={today}
+        availableTimeSlots={availableTimeSlots}
       />
     </form>
   );
@@ -49,9 +51,15 @@ AppointmentForm.defaultProps = {
   salonOpensAt: 9,
   salonClosesAt: 19,
   today: new Date(),
+  availableTimeSlots: [],
 };
 
-const TimeSlotTable = ({ salonOpensAt, salonClosesAt, today }) => {
+const TimeSlotTable = ({
+  salonOpensAt,
+  salonClosesAt,
+  today,
+  availableTimeSlots,
+}) => {
   const dateSlots = createDateSlots({ startDate: today });
   const timeSlots = createTimeSlots({
     intervalInMinutes: 30,
@@ -70,12 +78,21 @@ const TimeSlotTable = ({ salonOpensAt, salonClosesAt, today }) => {
         </tr>
       </thead>
       <tbody>
-        {timeSlots.map(({ timeAsString }) => (
+        {timeSlots.map(({ time, timeAsString }) => (
           <tr key={timeAsString}>
             <th>{timeAsString}</th>
-            {dateSlots.map(({ dateAsString }) => (
+            {dateSlots.map(({ date, dateAsString }) => (
               <td key={dateAsString}>
-                <input type='radio' />
+                {availableTimeSlots.some(
+                  (availableTimeSlot) =>
+                    availableTimeSlot.startsAt ===
+                    mergeDateAndTime({
+                      dateInMilliseconds: date,
+                      timeInMilliseconds: time,
+                    }),
+                ) ? (
+                  <input type='radio' />
+                ) : null}
               </td>
             ))}
           </tr>
@@ -124,6 +141,18 @@ const createDateSlots = ({ startDate }) => {
 
     return { date, dateAsString };
   });
+
+  return result;
+};
+
+const mergeDateAndTime = ({ dateInMilliseconds, timeInMilliseconds }) => {
+  const time = new Date(timeInMilliseconds);
+  const result = new Date(dateInMilliseconds).setHours(
+    time.getHours(),
+    time.getMinutes(),
+    time.getSeconds(),
+    time.getMilliseconds(),
+  );
 
   return result;
 };
