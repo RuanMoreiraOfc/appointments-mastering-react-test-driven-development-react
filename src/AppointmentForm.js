@@ -10,8 +10,9 @@ const AppointmentForm = ({
   salonClosesAt,
   today,
   availableTimeSlots,
+  startsAt,
 }) => {
-  const [appointment, setAppointment] = useState({ service });
+  const [appointment, setAppointment] = useState({ service, startsAt });
 
   return (
     <form id='appointment' onSubmit={() => onSubmit(appointment)}>
@@ -34,6 +35,7 @@ const AppointmentForm = ({
         salonClosesAt={salonClosesAt}
         today={today}
         availableTimeSlots={availableTimeSlots}
+        checkedTimeSlot={appointment.startsAt}
       />
     </form>
   );
@@ -59,6 +61,7 @@ const TimeSlotTable = ({
   salonClosesAt,
   today,
   availableTimeSlots,
+  checkedTimeSlot,
 }) => {
   const dateSlots = createDateSlots({ startDate: today });
   const timeSlots = createTimeSlots({
@@ -87,6 +90,7 @@ const TimeSlotTable = ({
                   availableTimeSlots={availableTimeSlots}
                   dateInMilliseconds={date}
                   timeInMilliseconds={time}
+                  checkedTimeSlot={checkedTimeSlot}
                 />
               </td>
             ))}
@@ -156,6 +160,7 @@ const RadioButtonIfAvailable = ({
   availableTimeSlots,
   dateInMilliseconds,
   timeInMilliseconds,
+  checkedTimeSlot,
 }) => {
   const startsAt = mergeDateAndTime({ dateInMilliseconds, timeInMilliseconds });
   if (
@@ -167,5 +172,14 @@ const RadioButtonIfAvailable = ({
     return null;
   }
 
-  return <input name='startsAt' type='radio' value={startsAt} />;
+  const isChecked = startsAt === checkedTimeSlot;
+  return (
+    <input
+      name='startsAt'
+      type='radio'
+      value={startsAt}
+      checked={isChecked}
+      readOnly
+    />
+  );
 };
