@@ -42,7 +42,7 @@ It was used on development:
 
 ##### [Skip Screenshots][btn-skip]
 
-#### Login:
+#### Tests:
 
 ![passing-test-log]
 
