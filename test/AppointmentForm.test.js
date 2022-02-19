@@ -393,5 +393,15 @@ describe('AppointmentForm', () => {
       expect(label).not.toBeNull();
       expect(label.textContent).toEqual('Stylist');
     });
+
+    it('assigns an id that matches the label', () => {
+      const component = <AppointmentForm />;
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const field = getAppointmentFormFieldFrom(container)('stylist');
+      expect(field.id).toEqual('stylist');
+    });
   });
 });
