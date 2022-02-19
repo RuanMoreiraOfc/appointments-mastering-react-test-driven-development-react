@@ -335,5 +335,18 @@ describe('AppointmentForm', () => {
       expect(field).toBeTruthy();
       expect(field.tagName).toEqual('SELECT');
     });
+
+    it('initially has a blank value chosen', () => {
+      const component = <AppointmentForm />;
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const field = getAppointmentFormFieldFrom(container)('stylist');
+      const firstNode = field.childNodes[0];
+      expect(firstNode).toBeTruthy();
+      expect(firstNode.value).toEqual('');
+      expect(firstNode.selected).toBeTruthy();
+    });
   });
 });
