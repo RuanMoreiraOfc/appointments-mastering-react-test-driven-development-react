@@ -21,8 +21,8 @@ const AppointmentForm = ({
     stylist,
   });
 
-  const availableStylists = service
-    ? stylistsByService[service]
+  const availableStylists = appointment.service
+    ? stylistsByService[appointment.service]
     : selectableStylists;
 
   const handleStartsAtChange = useCallback(
