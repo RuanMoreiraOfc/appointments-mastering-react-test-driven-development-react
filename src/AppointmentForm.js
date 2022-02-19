@@ -39,6 +39,7 @@ const AppointmentForm = ({
           <option key={service}>{service}</option>
         ))}
       </select>
+      <select name='stylist' />
       <TimeSlotTable
         salonOpensAt={salonOpensAt}
         salonClosesAt={salonClosesAt}
