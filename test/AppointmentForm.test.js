@@ -365,5 +365,22 @@ describe('AppointmentForm', () => {
         expect.arrayContaining(selectableStylists),
       );
     });
+
+    it('pre-selects the existing value', () => {
+      const selectableStylists = ['Mark', 'Julia'];
+      const component = (
+        <AppointmentForm
+          selectableStylists={selectableStylists}
+          stylist={selectableStylists[1]}
+        />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const field = getAppointmentFormFieldFrom(container)('stylist');
+      const option = findOptionFrom(field)('Julia');
+      expect(option.selected).toBeTruthy();
+    });
   });
 });
