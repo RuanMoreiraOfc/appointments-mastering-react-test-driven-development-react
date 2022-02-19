@@ -470,5 +470,32 @@ describe('AppointmentForm', () => {
       const field = getAppointmentFormFieldFrom(container)('stylist');
       expect(field.childNodes).toHaveLength(2);
     });
+
+    it('does not render stylist options when current service makes it unavailable', () => {
+      const selectableServices = ['1', '2'];
+      const selectableStylists = ['A', 'B'];
+      const stylistsByService = {
+        1: ['B'],
+        2: ['A', 'B'],
+      };
+      const component = (
+        <AppointmentForm
+          selectableServices={selectableServices}
+          service='1'
+          selectableStylists={selectableStylists}
+          stylistsByService={stylistsByService}
+        />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+      const serviceField = getAppointmentFormFieldFrom(container)('service');
+      ReactTestUtils.Simulate.change(serviceField, {
+        target: { value: '2' },
+      });
+
+      const stylistField = getAppointmentFormFieldFrom(container)('stylist');
+      expect(stylistField.childNodes).toHaveLength(3);
+    });
   });
 });
