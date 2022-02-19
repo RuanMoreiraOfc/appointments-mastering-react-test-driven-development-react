@@ -423,5 +423,29 @@ describe('AppointmentForm', () => {
 
       expect.hasAssertions();
     });
+
+    it('saves new value when submitted', () => {
+      const selectableStylists = ['Mark', 'Julia'];
+      const component = (
+        <AppointmentForm
+          selectableStylists={selectableStylists}
+          stylist={selectableStylists[0]}
+          onSubmit={({ stylist }) =>
+            expect(stylist).toEqual(selectableStylists[1])
+          }
+        />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+      const field = getAppointmentFormFieldFrom(container)('stylist');
+      const form = field.form;
+      ReactTestUtils.Simulate.change(field, {
+        target: { value: selectableStylists[1] },
+      });
+      ReactTestUtils.Simulate.submit(form);
+
+      expect.hasAssertions();
+    });
   });
 });
