@@ -403,5 +403,25 @@ describe('AppointmentForm', () => {
       const field = getAppointmentFormFieldFrom(container)('stylist');
       expect(field.id).toEqual('stylist');
     });
+
+    it('saves existing value when submitted', () => {
+      const selectableStylists = ['Mark', 'Julia'];
+      const component = (
+        <AppointmentForm
+          selectableStylists={selectableStylists}
+          stylist={selectableStylists[0]}
+          onSubmit={({ stylist }) =>
+            expect(stylist).toEqual(selectableStylists[0])
+          }
+        />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+      const form = getFormFrom(container)('appointment');
+      ReactTestUtils.Simulate.submit(form);
+
+      expect.hasAssertions();
+    });
   });
 });
