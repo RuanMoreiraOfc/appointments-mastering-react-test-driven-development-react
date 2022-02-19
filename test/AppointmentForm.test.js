@@ -323,4 +323,17 @@ describe('AppointmentForm', () => {
       expect.hasAssertions();
     });
   });
+
+  describe('stylist field', () => {
+    it('renders as a select box', () => {
+      const component = <AppointmentForm />;
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const field = getAppointmentFormFieldFrom(container)('stylist');
+      expect(field).toBeTruthy();
+      expect(field.tagName).toEqual('SELECT');
+    });
+  });
 });
