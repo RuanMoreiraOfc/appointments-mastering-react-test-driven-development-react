@@ -13,12 +13,17 @@ const AppointmentForm = ({
   startsAt,
   selectableStylists,
   stylist,
+  stylistsByService,
 }) => {
   const [appointment, setAppointment] = useState({
     service,
     startsAt,
     stylist,
   });
+
+  const availableStylists = service
+    ? stylistsByService[service]
+    : selectableStylists;
 
   const handleStartsAtChange = useCallback(
     ({ target: { value } }) =>
@@ -55,7 +60,7 @@ const AppointmentForm = ({
         }
       >
         <option />
-        {selectableStylists.map((stylist) => (
+        {availableStylists.map((stylist) => (
           <option key={stylist}>{stylist}</option>
         ))}
       </select>
@@ -95,6 +100,14 @@ AppointmentForm.defaultProps = {
     'Marta',
     'Michael',
   ],
+  stylistsByService: {
+    Cut: [],
+    'Blow-dry': [],
+    'Cut & color': [],
+    'Beard trim': [],
+    'Cut & beard trim': [],
+    Extensions: [],
+  },
 };
 
 const TimeSlotTable = ({
