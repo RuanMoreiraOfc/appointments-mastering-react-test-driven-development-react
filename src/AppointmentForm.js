@@ -12,6 +12,7 @@ const AppointmentForm = ({
   availableTimeSlots,
   startsAt,
   selectableStylists,
+  stylist,
 }) => {
   const [appointment, setAppointment] = useState({ service, startsAt });
 
@@ -40,7 +41,10 @@ const AppointmentForm = ({
           <option key={service}>{service}</option>
         ))}
       </select>
-      <select name='stylist'>
+      <select
+        name='stylist' //
+        defaultValue={stylist}
+      >
         <option />
         {selectableStylists.map((stylist) => (
           <option key={stylist}>{stylist}</option>
