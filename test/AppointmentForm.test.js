@@ -348,5 +348,22 @@ describe('AppointmentForm', () => {
       expect(firstNode.value).toEqual('');
       expect(firstNode.selected).toBeTruthy();
     });
+
+    it('lists all salon stylists', () => {
+      const selectableStylists = ['Mark', 'Julia'];
+      const component = (
+        <AppointmentForm selectableStylists={selectableStylists} />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const field = getAppointmentFormFieldFrom(container)('stylist');
+      const optionNodes = Array.from(field.childNodes);
+      const renderedStylists = optionNodes.map((node) => node.textContent);
+      expect(renderedStylists).toEqual(
+        expect.arrayContaining(selectableStylists),
+      );
+    });
   });
 });
