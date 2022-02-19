@@ -50,6 +50,9 @@ const AppointmentForm = ({
         id='stylist' //
         name='stylist'
         defaultValue={stylist}
+        onChange={({ target: { value } }) =>
+          setAppointment((oldState) => ({ ...oldState, stylist: value }))
+        }
       >
         <option />
         {selectableStylists.map((stylist) => (
