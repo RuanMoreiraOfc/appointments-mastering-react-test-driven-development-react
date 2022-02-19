@@ -447,5 +447,28 @@ describe('AppointmentForm', () => {
 
       expect.hasAssertions();
     });
+
+    it('does not render stylist options when default service makes it unavailable', () => {
+      const selectableServices = ['1', '2'];
+      const selectableStylists = ['A', 'B'];
+      const stylistsByService = {
+        1: ['B'],
+        2: ['A', 'B'],
+      };
+      const component = (
+        <AppointmentForm
+          selectableServices={selectableServices}
+          service='1'
+          selectableStylists={selectableStylists}
+          stylistsByService={stylistsByService}
+        />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const field = getAppointmentFormFieldFrom(container)('stylist');
+      expect(field.childNodes).toHaveLength(2);
+    });
   });
 });
