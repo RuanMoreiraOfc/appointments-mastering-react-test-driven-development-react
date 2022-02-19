@@ -14,7 +14,11 @@ const AppointmentForm = ({
   selectableStylists,
   stylist,
 }) => {
-  const [appointment, setAppointment] = useState({ service, startsAt });
+  const [appointment, setAppointment] = useState({
+    service,
+    startsAt,
+    stylist,
+  });
 
   const handleStartsAtChange = useCallback(
     ({ target: { value } }) =>
