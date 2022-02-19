@@ -382,5 +382,16 @@ describe('AppointmentForm', () => {
       const option = findOptionFrom(field)('Julia');
       expect(option.selected).toBeTruthy();
     });
+
+    it('renders a label', () => {
+      const component = <AppointmentForm />;
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const label = getLabelFrom(container)('stylist');
+      expect(label).not.toBeNull();
+      expect(label.textContent).toEqual('Stylist');
+    });
   });
 });
