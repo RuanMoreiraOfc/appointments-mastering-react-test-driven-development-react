@@ -11,6 +11,7 @@ const AppointmentForm = ({
   today,
   availableTimeSlots,
   startsAt,
+  selectableStylists,
 }) => {
   const [appointment, setAppointment] = useState({ service, startsAt });
 
@@ -41,6 +42,9 @@ const AppointmentForm = ({
       </select>
       <select name='stylist'>
         <option />
+        {selectableStylists.map((stylist) => (
+          <option key={stylist}>{stylist}</option>
+        ))}
       </select>
       <TimeSlotTable
         salonOpensAt={salonOpensAt}
@@ -67,6 +71,17 @@ AppointmentForm.defaultProps = {
   salonClosesAt: 19,
   today: new Date(),
   availableTimeSlots: [],
+  selectableStylists: [
+    'Maggie',
+    'Mario',
+    'Bruna',
+    'Mark',
+    'Julia',
+    'Marcia',
+    'John',
+    'Marta',
+    'Michael',
+  ],
 };
 
 const TimeSlotTable = ({
