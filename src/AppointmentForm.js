@@ -43,7 +43,8 @@ const AppointmentForm = ({
       </select>
       <label htmlFor='stylist'>Stylist</label>
       <select
-        name='stylist' //
+        id='stylist' //
+        name='stylist'
         defaultValue={stylist}
       >
         <option />
