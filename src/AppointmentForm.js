@@ -25,6 +25,12 @@ const AppointmentForm = ({
     ? stylistsByService[appointment.service]
     : selectableStylists;
 
+  const availableTimeSlotsByStylist = stylist
+    ? availableTimeSlots.filter((timeSlot) =>
+        timeSlot.availableStylists.includes(stylist),
+      )
+    : availableTimeSlots;
+
   const handleStartsAtChange = useCallback(
     ({ target: { value } }) =>
       setAppointment((appointment) => ({
@@ -68,7 +74,7 @@ const AppointmentForm = ({
         salonOpensAt={salonOpensAt}
         salonClosesAt={salonClosesAt}
         today={today}
-        availableTimeSlots={availableTimeSlots}
+        availableTimeSlots={availableTimeSlotsByStylist}
         checkedTimeSlot={appointment.startsAt}
         handleChange={handleStartsAtChange}
       />
