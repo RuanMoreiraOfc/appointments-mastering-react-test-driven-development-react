@@ -107,6 +107,8 @@ AppointmentForm.defaultProps = {
     'Michael',
   ],
   stylistsByService: {
+    A: [],
+    B: [],
     Cut: [],
     'Blow-dry': [],
     'Cut & color': [],
