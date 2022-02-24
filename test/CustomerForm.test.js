@@ -197,4 +197,31 @@ describe('CustomerForm', () => {
     const submitButton = container.querySelector('input[type="submit"]');
     expect(submitButton).not.toBeNull();
   });
+
+  it('calls fetch with the right properties when submitting data', () => {
+    const spy = createSpy();
+
+    // ***
+
+    const component = (
+      <CustomerForm
+        fetch={spy.set} //
+        onSubmit={() => {}}
+      />
+    );
+    const { container, render } = createContainer();
+
+    render(component);
+    const form = getFormFrom(container)('customer');
+    ReactTestUtils.Simulate.submit(form);
+    expect(spy).toHaveBeenCalled();
+    expect(spy.get(0)).toEqual('/customers');
+
+    const fetchConfig = spy.get(1);
+    expect(fetchConfig.method).toEqual('POST');
+    expect(fetchConfig.credentials).toEqual('same-origin');
+    expect(fetchConfig.headers).toEqual({
+      'Content-Type': 'application/json',
+    });
+  });
 });
