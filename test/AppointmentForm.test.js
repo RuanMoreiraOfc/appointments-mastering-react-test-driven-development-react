@@ -322,6 +322,31 @@ describe('AppointmentForm', () => {
 
       expect.hasAssertions();
     });
+
+    it('does not render time slots when default stylist makes it unavailable', () => {
+      const selectableStylists = ['A', 'B'];
+      const today = new Date();
+      const availableTimeSlots = [
+        { startsAt: today.setHours(9, 0, 0, 0), availableStylists: ['B'] },
+        {
+          startsAt: today.setHours(9, 30, 0, 0),
+          availableStylists: ['A', 'B'],
+        },
+      ];
+      const component = (
+        <AppointmentForm
+          availableTimeSlots={availableTimeSlots}
+          selectableStylists={selectableStylists}
+          stylist='A'
+        />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const fields = getStartsAtList(container);
+      expect(fields).toHaveLength(1);
+    });
   });
 
   describe('stylist field', () => {
