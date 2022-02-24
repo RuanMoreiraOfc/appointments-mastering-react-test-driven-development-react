@@ -124,7 +124,10 @@ describe('CustomerForm', () => {
 
     it('saves existing value when submitted', () => {
       const component = (
-        <CustomerForm {...{ [fieldName]: value }} onSubmit={spy.set} />
+        <CustomerForm
+          {...{ [fieldName]: value }} //
+          fetch={spy.set}
+        />
       );
       const { container, render } = createContainer();
 
@@ -132,8 +135,8 @@ describe('CustomerForm', () => {
       const form = getFormFrom(container)('customer');
       ReactTestUtils.Simulate.submit(form);
 
-      expect(spy).toHaveBeenCalled();
-      expect(spy.get(0)[fieldName]).toEqual(value);
+      const fetchOptions = spy.get(1);
+      expect(JSON.parse(fetchOptions.body)[fieldName]).toEqual(value);
     });
   };
 
@@ -142,7 +145,10 @@ describe('CustomerForm', () => {
 
     it('saves new value when submitted', () => {
       const component = (
-        <CustomerForm {...{ [fieldName]: 'value' }} onSubmit={spy.set} />
+        <CustomerForm
+          {...{ [fieldName]: 'value' }} //
+          fetch={spy.set}
+        />
       );
       const { container, render } = createContainer();
 
@@ -154,8 +160,8 @@ describe('CustomerForm', () => {
       });
       ReactTestUtils.Simulate.submit(form);
 
-      expect(spy).toHaveBeenCalled();
-      expect(spy.get(0)[fieldName]).toEqual(newValue);
+      const fetchOptions = spy.get(1);
+      expect(JSON.parse(fetchOptions.body)[fieldName]).toEqual(newValue);
     });
   };
 
@@ -203,12 +209,7 @@ describe('CustomerForm', () => {
 
     // ***
 
-    const component = (
-      <CustomerForm
-        fetch={spy.set} //
-        onSubmit={() => {}}
-      />
-    );
+    const component = <CustomerForm fetch={spy.set} />;
     const { container, render } = createContainer();
 
     render(component);
