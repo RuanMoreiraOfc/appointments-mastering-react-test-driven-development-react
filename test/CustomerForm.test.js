@@ -52,6 +52,17 @@ describe('CustomerForm', () => {
   const getLabelFrom = (container) => (fieldId) =>
     container.querySelector(`label[for="${fieldId}"]`);
 
+  const originalFetch = window.fetch;
+  let globalFetchSpy;
+  beforeEach(() => {
+    globalFetchSpy = createSpy();
+    window.fetch = globalFetchSpy.set;
+  });
+
+  afterEach(() => {
+    window.fetch = originalFetch;
+  });
+
   it('renders a form', () => {
     const component = <CustomerForm />;
     const { container, render } = createContainer();
@@ -120,36 +131,22 @@ describe('CustomerForm', () => {
   };
 
   const itSubmitsExistingValue = (fieldName) => (value) => {
-    const spy = createSpy();
-
     it('saves existing value when submitted', () => {
-      const component = (
-        <CustomerForm
-          {...{ [fieldName]: value }} //
-          fetch={spy.set}
-        />
-      );
+      const component = <CustomerForm {...{ [fieldName]: value }} />;
       const { container, render } = createContainer();
 
       render(component);
       const form = getFormFrom(container)('customer');
       ReactTestUtils.Simulate.submit(form);
 
-      const fetchOptions = spy.get(1);
+      const fetchOptions = globalFetchSpy.get(1);
       expect(JSON.parse(fetchOptions.body)[fieldName]).toEqual(value);
     });
   };
 
   const itSubmitsNewValue = (fieldName) => (newValue) => {
-    const spy = createSpy();
-
     it('saves new value when submitted', () => {
-      const component = (
-        <CustomerForm
-          {...{ [fieldName]: 'value' }} //
-          fetch={spy.set}
-        />
-      );
+      const component = <CustomerForm {...{ [fieldName]: 'value' }} />;
       const { container, render } = createContainer();
 
       render(component);
@@ -160,7 +157,7 @@ describe('CustomerForm', () => {
       });
       ReactTestUtils.Simulate.submit(form);
 
-      const fetchOptions = spy.get(1);
+      const fetchOptions = globalFetchSpy.get(1);
       expect(JSON.parse(fetchOptions.body)[fieldName]).toEqual(newValue);
     });
   };
@@ -205,20 +202,16 @@ describe('CustomerForm', () => {
   });
 
   it('calls fetch with the right properties when submitting data', () => {
-    const spy = createSpy();
-
-    // ***
-
-    const component = <CustomerForm fetch={spy.set} />;
+    const component = <CustomerForm />;
     const { container, render } = createContainer();
 
     render(component);
     const form = getFormFrom(container)('customer');
     ReactTestUtils.Simulate.submit(form);
-    expect(spy).toHaveBeenCalled();
-    expect(spy.get(0)).toEqual('/customers');
+    expect(globalFetchSpy).toHaveBeenCalled();
+    expect(globalFetchSpy.get(0)).toEqual('/customers');
 
-    const fetchConfig = spy.get(1);
+    const fetchConfig = globalFetchSpy.get(1);
     expect(fetchConfig.method).toEqual('POST');
     expect(fetchConfig.credentials).toEqual('same-origin');
     expect(fetchConfig.headers).toEqual({
