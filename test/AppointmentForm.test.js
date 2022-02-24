@@ -347,6 +347,34 @@ describe('AppointmentForm', () => {
       const fields = getStartsAtList(container);
       expect(fields).toHaveLength(1);
     });
+
+    it('does not render time slots when current stylist makes it unavailable', () => {
+      const selectableStylists = ['A', 'B'];
+      const today = new Date();
+      const availableTimeSlots = [
+        { startsAt: today.setHours(9, 0, 0, 0), availableStylists: ['B'] },
+        {
+          startsAt: today.setHours(9, 30, 0, 0),
+          availableStylists: ['A', 'B'],
+        },
+      ];
+      const component = (
+        <AppointmentForm
+          availableTimeSlots={availableTimeSlots}
+          selectableStylists={selectableStylists}
+          stylist='A'
+        />
+      );
+      const { container, render } = createContainer();
+      render(component);
+      const stylistField = getAppointmentFormFieldFrom(container)('stylist');
+      ReactTestUtils.Simulate.change(stylistField, {
+        target: { value: 'B' },
+      });
+
+      const fields = getStartsAtList(container);
+      expect(fields).toHaveLength(2);
+    });
   });
 
   describe('stylist field', () => {
