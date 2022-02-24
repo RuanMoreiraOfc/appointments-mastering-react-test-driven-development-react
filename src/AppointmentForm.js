@@ -25,9 +25,9 @@ const AppointmentForm = ({
     ? stylistsByService[appointment.service]
     : selectableStylists;
 
-  const availableTimeSlotsByStylist = stylist
+  const availableTimeSlotsByStylist = appointment.stylist
     ? availableTimeSlots.filter((timeSlot) =>
-        timeSlot.availableStylists.includes(stylist),
+        timeSlot.availableStylists.includes(appointment.stylist),
       )
     : availableTimeSlots;
 
