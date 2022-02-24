@@ -187,6 +187,67 @@ describe('AppointmentForm', () => {
     itSubmitsNewValue('service')('selectableServices');
   });
 
+  describe('stylist field', () => {
+    itRendersAsASelectBox('stylist');
+    itInitiallyHasABlankValueChosen('stylist');
+    itListAllOptions('stylist')('selectableStylists');
+    itPreSelectsExistingValue('stylist')('selectableStylists');
+    itRendersALabel('stylist')('Stylist');
+    itAssignsAnIdThatMatchesTheLabelId('stylist');
+    itSubmitsExistingValue('stylist')('selectableStylists');
+    itSubmitsNewValue('stylist')('selectableStylists');
+
+    it('does not render stylist options when default service makes it unavailable', () => {
+      const selectableServices = ['1', '2'];
+      const selectableStylists = ['A', 'B'];
+      const stylistsByService = {
+        1: ['B'],
+        2: ['A', 'B'],
+      };
+      const component = (
+        <AppointmentForm
+          selectableServices={selectableServices}
+          service='1'
+          selectableStylists={selectableStylists}
+          stylistsByService={stylistsByService}
+        />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+
+      const field = getAppointmentFormFieldFrom(container)('stylist');
+      expect(field.childNodes).toHaveLength(2);
+    });
+
+    it('does not render stylist options when current service makes it unavailable', () => {
+      const selectableServices = ['1', '2'];
+      const selectableStylists = ['A', 'B'];
+      const stylistsByService = {
+        1: ['B'],
+        2: ['A', 'B'],
+      };
+      const component = (
+        <AppointmentForm
+          selectableServices={selectableServices}
+          service='1'
+          selectableStylists={selectableStylists}
+          stylistsByService={stylistsByService}
+        />
+      );
+      const { container, render } = createContainer();
+
+      render(component);
+      const serviceField = getAppointmentFormFieldFrom(container)('service');
+      ReactTestUtils.Simulate.change(serviceField, {
+        target: { value: '2' },
+      });
+
+      const stylistField = getAppointmentFormFieldFrom(container)('stylist');
+      expect(stylistField.childNodes).toHaveLength(3);
+    });
+  });
+
   describe('time slot table', () => {
     it('renders a table for time slots', () => {
       const component = <AppointmentForm />;
@@ -366,9 +427,9 @@ describe('AppointmentForm', () => {
       ];
       const component = (
         <AppointmentForm
-          availableTimeSlots={availableTimeSlots}
           selectableStylists={selectableStylists}
           stylist='A'
+          availableTimeSlots={availableTimeSlots}
         />
       );
       const { container, render } = createContainer();
@@ -391,9 +452,9 @@ describe('AppointmentForm', () => {
       ];
       const component = (
         <AppointmentForm
-          availableTimeSlots={availableTimeSlots}
           selectableStylists={selectableStylists}
           stylist='A'
+          availableTimeSlots={availableTimeSlots}
         />
       );
       const { container, render } = createContainer();
@@ -405,67 +466,6 @@ describe('AppointmentForm', () => {
 
       const fields = getStartsAtList(container);
       expect(fields).toHaveLength(2);
-    });
-  });
-
-  describe('stylist field', () => {
-    itRendersAsASelectBox('stylist');
-    itInitiallyHasABlankValueChosen('stylist');
-    itListAllOptions('stylist')('selectableStylists');
-    itPreSelectsExistingValue('stylist')('selectableStylists');
-    itRendersALabel('stylist')('Stylist');
-    itAssignsAnIdThatMatchesTheLabelId('stylist');
-    itSubmitsExistingValue('stylist')('selectableStylists');
-    itSubmitsNewValue('stylist')('selectableStylists');
-
-    it('does not render stylist options when default service makes it unavailable', () => {
-      const selectableServices = ['1', '2'];
-      const selectableStylists = ['A', 'B'];
-      const stylistsByService = {
-        1: ['B'],
-        2: ['A', 'B'],
-      };
-      const component = (
-        <AppointmentForm
-          selectableServices={selectableServices}
-          service='1'
-          selectableStylists={selectableStylists}
-          stylistsByService={stylistsByService}
-        />
-      );
-      const { container, render } = createContainer();
-
-      render(component);
-
-      const field = getAppointmentFormFieldFrom(container)('stylist');
-      expect(field.childNodes).toHaveLength(2);
-    });
-
-    it('does not render stylist options when current service makes it unavailable', () => {
-      const selectableServices = ['1', '2'];
-      const selectableStylists = ['A', 'B'];
-      const stylistsByService = {
-        1: ['B'],
-        2: ['A', 'B'],
-      };
-      const component = (
-        <AppointmentForm
-          selectableServices={selectableServices}
-          service='1'
-          selectableStylists={selectableStylists}
-          stylistsByService={stylistsByService}
-        />
-      );
-      const { container, render } = createContainer();
-
-      render(component);
-      const serviceField = getAppointmentFormFieldFrom(container)('service');
-      ReactTestUtils.Simulate.change(serviceField, {
-        target: { value: '2' },
-      });
-
-      const stylistField = getAppointmentFormFieldFrom(container)('stylist');
-      expect(stylistField.childNodes).toHaveLength(3);
     });
   });
 });

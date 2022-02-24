@@ -5,15 +5,15 @@ export { AppointmentForm };
 const AppointmentForm = ({
   selectableServices,
   service,
+  selectableStylists,
+  stylist,
+  stylistsByService,
   onSubmit,
   salonOpensAt,
   salonClosesAt,
   today,
   availableTimeSlots,
   startsAt,
-  selectableStylists,
-  stylist,
-  stylistsByService,
 }) => {
   const [appointment, setAppointment] = useState({
     service,
