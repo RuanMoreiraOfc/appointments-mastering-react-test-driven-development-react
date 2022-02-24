@@ -4,6 +4,44 @@ import { createContainer } from './utils/domManipulators';
 
 import { CustomerForm } from '../src/CustomerForm';
 
+const createSpy = () => {
+  let receivedArguments;
+
+  return {
+    get: (n) => receivedArguments[n],
+    getAll: () => receivedArguments,
+    set: (...args) => (receivedArguments = args),
+  };
+};
+
+expect.extend({
+  toHaveBeenCalled(received) {
+    if (received.getAll() === undefined) {
+      return {
+        pass: false,
+        message: () => 'Spy was not called.',
+      };
+    }
+    return { pass: true, message: () => 'Spy was called.' };
+  },
+});
+
+describe('Helper: `toHaveBeenCalled`', () => {
+  it('pass', () => {
+    const spy = createSpy();
+
+    spy.set('anything');
+
+    expect(spy.getAll()).not.toEqual(undefined);
+  });
+
+  it('fail', () => {
+    const spy = createSpy();
+
+    expect(spy.getAll()).toEqual(undefined);
+  });
+});
+
 describe('CustomerForm', () => {
   const getFormFrom = (container) => (id) =>
     container.querySelector(`form[id="${id}"]`);
@@ -82,12 +120,11 @@ describe('CustomerForm', () => {
   };
 
   const itSubmitsExistingValue = (fieldName) => (value) => {
+    const spy = createSpy();
+
     it('saves existing value when submitted', () => {
       const component = (
-        <CustomerForm
-          {...{ [fieldName]: value }}
-          onSubmit={(props) => expect(props[fieldName]).toEqual(value)}
-        />
+        <CustomerForm {...{ [fieldName]: value }} onSubmit={spy.set} />
       );
       const { container, render } = createContainer();
 
@@ -95,17 +132,17 @@ describe('CustomerForm', () => {
       const form = getFormFrom(container)('customer');
       ReactTestUtils.Simulate.submit(form);
 
-      expect.hasAssertions();
+      expect(spy).toHaveBeenCalled();
+      expect(spy.get(0)[fieldName]).toEqual(value);
     });
   };
 
   const itSubmitsNewValue = (fieldName) => (newValue) => {
+    const spy = createSpy();
+
     it('saves new value when submitted', () => {
       const component = (
-        <CustomerForm
-          {...{ [fieldName]: 'value' }}
-          onSubmit={(props) => expect(props[fieldName]).toEqual(newValue)}
-        />
+        <CustomerForm {...{ [fieldName]: 'value' }} onSubmit={spy.set} />
       );
       const { container, render } = createContainer();
 
@@ -117,7 +154,8 @@ describe('CustomerForm', () => {
       });
       ReactTestUtils.Simulate.submit(form);
 
-      expect.hasAssertions();
+      expect(spy).toHaveBeenCalled();
+      expect(spy.get(0)[fieldName]).toEqual(newValue);
     });
   };
 
