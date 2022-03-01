@@ -6,6 +6,7 @@ const CustomerForm = ({
   firstName, //
   lastName,
   phoneNumber,
+  onSave,
 }) => {
   const [customer, setCustomer] = useState({
     firstName,
@@ -19,13 +20,17 @@ const CustomerForm = ({
       [field]: event.target.value, //
     }));
 
-  const handleSubmit = () => {
-    window.fetch('/customers', {
+  const handleSubmit = async () => {
+    const response = await window.fetch('/customers', {
       method: 'POST',
       credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(customer),
     });
+
+    const data = await response.json();
+
+    onSave(data);
   };
 
   return (
@@ -57,4 +62,8 @@ const CustomerForm = ({
       <input type='submit' value='Add' />
     </form>
   );
+};
+
+CustomerForm.defaultProps = {
+  onSave: () => {},
 };
