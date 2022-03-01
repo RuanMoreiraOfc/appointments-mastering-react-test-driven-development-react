@@ -274,4 +274,21 @@ describe('CustomerForm', () => {
 
     expect(saveSpy).not.toHaveBeenCalled();
   });
+
+  it('prevents the default action when submitting the form', async () => {
+    const preventDefaultSpy = createSpy();
+
+    const component = <CustomerForm />;
+    const { container, render } = createContainer();
+
+    render(component);
+    const form = getFormFrom(container)('customer');
+    await act(async () => {
+      ReactTestUtils.Simulate.submit(form, {
+        preventDefault: preventDefaultSpy.set,
+      });
+    });
+
+    expect(preventDefaultSpy).toHaveBeenCalled();
+  });
 });
