@@ -20,7 +20,9 @@ const CustomerForm = ({
       [field]: event.target.value, //
     }));
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
     const response = await window.fetch('/customers', {
       method: 'POST',
       credentials: 'same-origin',
