@@ -28,9 +28,10 @@ const CustomerForm = ({
       body: JSON.stringify(customer),
     });
 
-    const data = await response.json();
-
-    onSave(data);
+    if (response.ok === true) {
+      const data = await response.json();
+      onSave(data);
+    }
   };
 
   return (
