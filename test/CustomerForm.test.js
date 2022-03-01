@@ -23,6 +23,8 @@ const fetchResponseOk = (body) =>
     json: () => Promise.resolve(body),
   });
 
+const fetchResponseError = () => Promise.resolve({ ok: false });
+
 expect.extend({
   toHaveBeenCalled(received) {
     if (received.getAll() === undefined) {
@@ -251,5 +253,25 @@ describe('CustomerForm', () => {
 
     expect(saveSpy).toHaveBeenCalled();
     expect(saveSpy.get(0)).toEqual(customer);
+  });
+
+  it('does not notify onSave if the POST request returns an error', async () => {
+    const saveSpy = createSpy();
+
+    // ***
+
+    const fetchResponse = fetchResponseError();
+    globalFetchSpy.stubReturnValue(fetchResponse);
+
+    const component = <CustomerForm onSave={saveSpy.set} />;
+    const { container, render } = createContainer();
+
+    render(component);
+    const form = getFormFrom(container)('customer');
+    await act(async () => {
+      ReactTestUtils.Simulate.submit(form);
+    });
+
+    expect(saveSpy).not.toHaveBeenCalled();
   });
 });
