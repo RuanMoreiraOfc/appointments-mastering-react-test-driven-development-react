@@ -1,3 +1,4 @@
+import { act } from 'react-dom/test-utils';
 import ReactTestUtils from 'react-dom/test-utils';
 
 import { createContainer } from './utils/domManipulators';
@@ -6,13 +7,21 @@ import { CustomerForm } from '../src/CustomerForm';
 
 const createSpy = () => {
   let receivedArguments;
+  let returnValue;
 
   return {
     get: (n) => receivedArguments[n],
     getAll: () => receivedArguments,
-    set: (...args) => (receivedArguments = args),
+    stubReturnValue: (value) => (returnValue = value),
+    set: (...args) => (receivedArguments = args) && returnValue,
   };
 };
+
+const fetchResponseOk = (body) =>
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve(body),
+  });
 
 expect.extend({
   toHaveBeenCalled(received) {
@@ -57,6 +66,9 @@ describe('CustomerForm', () => {
   beforeEach(() => {
     globalFetchSpy = createSpy();
     window.fetch = globalFetchSpy.set;
+
+    const fetchResponse = fetchResponseOk({});
+    globalFetchSpy.stubReturnValue(fetchResponse);
   });
 
   afterEach(() => {
@@ -217,5 +229,27 @@ describe('CustomerForm', () => {
     expect(fetchConfig.headers).toEqual({
       'Content-Type': 'application/json',
     });
+  });
+
+  it('notifies onSave when form is submitted', async () => {
+    const saveSpy = createSpy();
+
+    // ***
+
+    const customer = { id: 123 };
+    const fetchResponse = fetchResponseOk(customer);
+    globalFetchSpy.stubReturnValue(fetchResponse);
+
+    const component = <CustomerForm onSave={saveSpy.set} />;
+    const { container, render } = createContainer();
+
+    render(component);
+    const form = getFormFrom(container)('customer');
+    await act(async () => {
+      ReactTestUtils.Simulate.submit(form);
+    });
+
+    expect(saveSpy).toHaveBeenCalled();
+    expect(saveSpy.get(0)).toEqual(customer);
   });
 });
