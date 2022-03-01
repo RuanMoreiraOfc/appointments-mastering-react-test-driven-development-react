@@ -291,4 +291,22 @@ describe('CustomerForm', () => {
 
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
+
+  it('renders error message when fetch call fails', async () => {
+    const fetchResponse = fetchResponseError();
+    globalFetchSpy.stubReturnValue(fetchResponse);
+
+    const component = <CustomerForm />;
+    const { container, render } = createContainer();
+
+    render(component);
+    const form = getFormFrom(container)('customer');
+    await act(async () => {
+      ReactTestUtils.Simulate.submit(form);
+    });
+
+    const errorElement = container.querySelector('.error');
+    expect(errorElement).not.toBeNull();
+    expect(errorElement.textContent).toMatch('error occurred');
+  });
 });
