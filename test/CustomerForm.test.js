@@ -1,3 +1,7 @@
+// INFO: create a simple mock instead of {import 'whatwg-fetch'};
+
+window.fetch = () => {};
+
 import { act } from 'react-dom/test-utils';
 import ReactTestUtils from 'react-dom/test-utils';
 
@@ -20,16 +24,13 @@ describe('CustomerForm', () => {
   const getLabelFrom = (container) => (fieldId) =>
     container.querySelector(`label[for="${fieldId}"]`);
 
-  const originalFetch = window.fetch;
-  let globalFetchSpy;
   beforeEach(() => {
     const fetchResponse = getFetchResponseOk({});
-    globalFetchSpy = jest.fn(() => fetchResponse);
-    window.fetch = globalFetchSpy;
+    jest.spyOn(window, 'fetch').mockReturnValue(fetchResponse);
   });
 
   afterEach(() => {
-    window.fetch = originalFetch;
+    window.fetch.mockRestore();
   });
 
   it('renders a form', () => {
@@ -109,7 +110,7 @@ describe('CustomerForm', () => {
       const form = getFormFrom(container)('customer');
       ReactTestUtils.Simulate.submit(form);
 
-      const body = getRequestBodyOf(globalFetchSpy);
+      const body = getRequestBodyOf(window.fetch);
       expect(body).toMatchObject(defaultFields);
     });
   };
@@ -129,7 +130,7 @@ describe('CustomerForm', () => {
       });
       ReactTestUtils.Simulate.submit(form);
 
-      const body = getRequestBodyOf(globalFetchSpy);
+      const body = getRequestBodyOf(window.fetch);
       expect(body).toMatchObject(atEndFields);
     });
   };
@@ -180,7 +181,7 @@ describe('CustomerForm', () => {
     render(component);
     const form = getFormFrom(container)('customer');
     ReactTestUtils.Simulate.submit(form);
-    expect(globalFetchSpy).toHaveBeenCalledWith(
+    expect(window.fetch).toHaveBeenCalledWith(
       '/customers',
       expect.objectContaining({
         method: 'POST',
@@ -199,7 +200,7 @@ describe('CustomerForm', () => {
 
     const customer = { id: 123 };
     const fetchResponse = getFetchResponseOk(customer);
-    globalFetchSpy.mockReturnValue(fetchResponse);
+    window.fetch.mockReturnValue(fetchResponse);
 
     const component = <CustomerForm onSave={saveSpy} />;
     const { container, render } = createContainer();
@@ -219,7 +220,7 @@ describe('CustomerForm', () => {
     // ***
 
     const fetchResponse = getFetchResponseError();
-    globalFetchSpy.mockReturnValue(fetchResponse);
+    window.fetch.mockReturnValue(fetchResponse);
 
     const component = <CustomerForm onSave={saveSpy} />;
     const { container, render } = createContainer();
@@ -252,7 +253,7 @@ describe('CustomerForm', () => {
 
   it('renders error message when fetch call fails', async () => {
     const fetchResponse = getFetchResponseError();
-    globalFetchSpy.mockReturnValue(fetchResponse);
+    window.fetch.mockReturnValue(fetchResponse);
 
     const component = <CustomerForm />;
     const { container, render } = createContainer();
