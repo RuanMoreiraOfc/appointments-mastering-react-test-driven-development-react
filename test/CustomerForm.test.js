@@ -2,19 +2,13 @@ import { act } from 'react-dom/test-utils';
 import ReactTestUtils from 'react-dom/test-utils';
 
 import { createContainer } from './utils/domManipulators';
+import {
+  getFetchResponseOk,
+  getFetchResponseError,
+  getRequestBodyOf,
+} from './utils/spyHelpers';
 
 import { CustomerForm } from '../src/CustomerForm';
-
-const getFetchResponseOk = (body) =>
-  Promise.resolve({
-    ok: true,
-    json: () => Promise.resolve(body),
-  });
-
-const getFetchResponseError = () => Promise.resolve({ ok: false });
-
-const getFetchRequestBody = (fetchSpy) =>
-  JSON.parse(fetchSpy.mock.calls[0][1].body);
 
 describe('CustomerForm', () => {
   const getFormFrom = (container) => (id) =>
@@ -115,7 +109,7 @@ describe('CustomerForm', () => {
       const form = getFormFrom(container)('customer');
       ReactTestUtils.Simulate.submit(form);
 
-      const body = getFetchRequestBody(globalFetchSpy);
+      const body = getRequestBodyOf(globalFetchSpy);
       expect(body).toMatchObject(defaultFields);
     });
   };
@@ -135,7 +129,7 @@ describe('CustomerForm', () => {
       });
       ReactTestUtils.Simulate.submit(form);
 
-      const body = getFetchRequestBody(globalFetchSpy);
+      const body = getRequestBodyOf(globalFetchSpy);
       expect(body).toMatchObject(atEndFields);
     });
   };
