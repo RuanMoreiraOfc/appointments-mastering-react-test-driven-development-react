@@ -5,53 +5,16 @@ import { createContainer } from './utils/domManipulators';
 
 import { CustomerForm } from '../src/CustomerForm';
 
-const createSpy = () => {
-  let receivedArguments;
-  let returnValue;
-
-  return {
-    get: (n) => receivedArguments[n],
-    getAll: () => receivedArguments,
-    stubReturnValue: (value) => (returnValue = value),
-    set: (...args) => (receivedArguments = args) && returnValue,
-  };
-};
-
-const fetchResponseOk = (body) =>
+const getFetchResponseOk = (body) =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve(body),
   });
 
-const fetchResponseError = () => Promise.resolve({ ok: false });
+const getFetchResponseError = () => Promise.resolve({ ok: false });
 
-expect.extend({
-  toHaveBeenCalled(received) {
-    if (received.getAll() === undefined) {
-      return {
-        pass: false,
-        message: () => 'Spy was not called.',
-      };
-    }
-    return { pass: true, message: () => 'Spy was called.' };
-  },
-});
-
-describe('Helper: `toHaveBeenCalled`', () => {
-  it('pass', () => {
-    const spy = createSpy();
-
-    spy.set('anything');
-
-    expect(spy.getAll()).not.toEqual(undefined);
-  });
-
-  it('fail', () => {
-    const spy = createSpy();
-
-    expect(spy.getAll()).toEqual(undefined);
-  });
-});
+const getFetchRequestBody = (fetchSpy) =>
+  JSON.parse(fetchSpy.mock.calls[0][1].body);
 
 describe('CustomerForm', () => {
   const getFormFrom = (container) => (id) =>
@@ -66,11 +29,9 @@ describe('CustomerForm', () => {
   const originalFetch = window.fetch;
   let globalFetchSpy;
   beforeEach(() => {
-    globalFetchSpy = createSpy();
-    window.fetch = globalFetchSpy.set;
-
-    const fetchResponse = fetchResponseOk({});
-    globalFetchSpy.stubReturnValue(fetchResponse);
+    const fetchResponse = getFetchResponseOk({});
+    globalFetchSpy = jest.fn(() => fetchResponse);
+    window.fetch = globalFetchSpy;
   });
 
   afterEach(() => {
@@ -146,21 +107,24 @@ describe('CustomerForm', () => {
 
   const itSubmitsExistingValue = (fieldName) => (value) => {
     it('saves existing value when submitted', () => {
-      const component = <CustomerForm {...{ [fieldName]: value }} />;
+      const defaultFields = { [fieldName]: value };
+      const component = <CustomerForm {...defaultFields} />;
       const { container, render } = createContainer();
 
       render(component);
       const form = getFormFrom(container)('customer');
       ReactTestUtils.Simulate.submit(form);
 
-      const fetchOptions = globalFetchSpy.get(1);
-      expect(JSON.parse(fetchOptions.body)[fieldName]).toEqual(value);
+      const body = getFetchRequestBody(globalFetchSpy);
+      expect(body).toMatchObject(defaultFields);
     });
   };
 
   const itSubmitsNewValue = (fieldName) => (newValue) => {
     it('saves new value when submitted', () => {
-      const component = <CustomerForm {...{ [fieldName]: 'value' }} />;
+      const defaultFields = { [fieldName]: 'value' };
+      const atEndFields = { [fieldName]: newValue };
+      const component = <CustomerForm {...defaultFields} />;
       const { container, render } = createContainer();
 
       render(component);
@@ -171,8 +135,8 @@ describe('CustomerForm', () => {
       });
       ReactTestUtils.Simulate.submit(form);
 
-      const fetchOptions = globalFetchSpy.get(1);
-      expect(JSON.parse(fetchOptions.body)[fieldName]).toEqual(newValue);
+      const body = getFetchRequestBody(globalFetchSpy);
+      expect(body).toMatchObject(atEndFields);
     });
   };
 
@@ -222,27 +186,28 @@ describe('CustomerForm', () => {
     render(component);
     const form = getFormFrom(container)('customer');
     ReactTestUtils.Simulate.submit(form);
-    expect(globalFetchSpy).toHaveBeenCalled();
-    expect(globalFetchSpy.get(0)).toEqual('/customers');
-
-    const fetchConfig = globalFetchSpy.get(1);
-    expect(fetchConfig.method).toEqual('POST');
-    expect(fetchConfig.credentials).toEqual('same-origin');
-    expect(fetchConfig.headers).toEqual({
-      'Content-Type': 'application/json',
-    });
+    expect(globalFetchSpy).toHaveBeenCalledWith(
+      '/customers',
+      expect.objectContaining({
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+    );
   });
 
   it('notifies onSave when form is submitted', async () => {
-    const saveSpy = createSpy();
+    const saveSpy = jest.fn();
 
     // ***
 
     const customer = { id: 123 };
-    const fetchResponse = fetchResponseOk(customer);
-    globalFetchSpy.stubReturnValue(fetchResponse);
+    const fetchResponse = getFetchResponseOk(customer);
+    globalFetchSpy.mockReturnValue(fetchResponse);
 
-    const component = <CustomerForm onSave={saveSpy.set} />;
+    const component = <CustomerForm onSave={saveSpy} />;
     const { container, render } = createContainer();
 
     render(component);
@@ -251,19 +216,18 @@ describe('CustomerForm', () => {
       ReactTestUtils.Simulate.submit(form);
     });
 
-    expect(saveSpy).toHaveBeenCalled();
-    expect(saveSpy.get(0)).toEqual(customer);
+    expect(saveSpy).toHaveBeenCalledWith(customer);
   });
 
   it('does not notify onSave if the POST request returns an error', async () => {
-    const saveSpy = createSpy();
+    const saveSpy = jest.fn();
 
     // ***
 
-    const fetchResponse = fetchResponseError();
-    globalFetchSpy.stubReturnValue(fetchResponse);
+    const fetchResponse = getFetchResponseError();
+    globalFetchSpy.mockReturnValue(fetchResponse);
 
-    const component = <CustomerForm onSave={saveSpy.set} />;
+    const component = <CustomerForm onSave={saveSpy} />;
     const { container, render } = createContainer();
 
     render(component);
@@ -276,7 +240,7 @@ describe('CustomerForm', () => {
   });
 
   it('prevents the default action when submitting the form', async () => {
-    const preventDefaultSpy = createSpy();
+    const preventDefaultSpy = jest.fn();
 
     const component = <CustomerForm />;
     const { container, render } = createContainer();
@@ -285,7 +249,7 @@ describe('CustomerForm', () => {
     const form = getFormFrom(container)('customer');
     await act(async () => {
       ReactTestUtils.Simulate.submit(form, {
-        preventDefault: preventDefaultSpy.set,
+        preventDefault: preventDefaultSpy,
       });
     });
 
@@ -293,8 +257,8 @@ describe('CustomerForm', () => {
   });
 
   it('renders error message when fetch call fails', async () => {
-    const fetchResponse = fetchResponseError();
-    globalFetchSpy.stubReturnValue(fetchResponse);
+    const fetchResponse = getFetchResponseError();
+    globalFetchSpy.mockReturnValue(fetchResponse);
 
     const component = <CustomerForm />;
     const { container, render } = createContainer();
