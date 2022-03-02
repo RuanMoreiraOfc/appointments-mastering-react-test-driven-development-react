@@ -8,6 +8,7 @@ const CustomerForm = ({
   phoneNumber,
   onSave,
 }) => {
+  const [error, setError] = useState(false);
   const [customer, setCustomer] = useState({
     firstName,
     lastName,
@@ -33,11 +34,14 @@ const CustomerForm = ({
     if (response.ok === true) {
       const data = await response.json();
       onSave(data);
+    } else {
+      setError(true);
     }
   };
 
   return (
     <form id='customer' onSubmit={handleSubmit}>
+      {error ? <ErrorMessage /> : null}
       <label htmlFor='firstName'>First name</label>
       <input
         id='firstName'
@@ -70,3 +74,7 @@ const CustomerForm = ({
 CustomerForm.defaultProps = {
   onSave: () => {},
 };
+
+const ErrorMessage = () => (
+  <div className='error'>An error occurred during save.</div>
+);
