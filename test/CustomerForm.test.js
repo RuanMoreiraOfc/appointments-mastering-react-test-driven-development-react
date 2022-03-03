@@ -15,14 +15,7 @@ import {
 import { CustomerForm } from '../src/CustomerForm';
 
 describe('CustomerForm', () => {
-  const getFormFrom = (container) => (id) =>
-    container.querySelector(`form[id="${id}"]`);
-
-  const getCustomerFormFieldFrom = (container) => (field) =>
-    getFormFrom(container)('customer').elements[field];
-
-  const getLabelFrom = (container) => (fieldId) =>
-    container.querySelector(`label[for="${fieldId}"]`);
+  const thisFormId = 'customer';
 
   beforeEach(() => {
     const fetchResponse = getFetchResponseOk({});
@@ -35,11 +28,11 @@ describe('CustomerForm', () => {
 
   it('renders a form', () => {
     const component = <CustomerForm />;
-    const { container, render } = createContainer();
+    const { render, query } = createContainer();
 
     render(component);
 
-    const form = getFormFrom(container)('customer');
+    const { form } = query({ formId: thisFormId });
     expect(form).not.toBeNull();
   });
 
@@ -54,11 +47,11 @@ describe('CustomerForm', () => {
   const itRendersAsATextBox = (fieldName) => {
     it('renders field as a text box', () => {
       const component = <CustomerForm />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const field = getCustomerFormFieldFrom(container)(fieldName);
+      const { field } = query({ formId: thisFormId, field: fieldName });
       expectToBeInputFieldOfTypeText(field);
     });
   };
@@ -66,11 +59,11 @@ describe('CustomerForm', () => {
   const itIncludesTheExistingValue = (fieldName) => {
     it('includes the existing value', () => {
       const component = <CustomerForm {...{ [fieldName]: 'value' }} />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const field = getCustomerFormFieldFrom(container)(fieldName);
+      const { field } = query({ formId: thisFormId, field: fieldName });
       expect(field.defaultValue).toEqual('value');
     });
   };
@@ -78,25 +71,25 @@ describe('CustomerForm', () => {
   const itRendersALabel = (fieldName) => (labelContent) => {
     it('renders a label for the field', () => {
       const component = <CustomerForm />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const label = getLabelFrom(container)(fieldName);
+      const { label } = query({ formId: thisFormId, field: fieldName });
       expect(label).not.toBeNull();
       expect(label.textContent).toEqual(labelContent);
     });
   };
 
-  const itAssignsAnIdThatMatchesTheLabelId = (fieldName) => {
+  const itAssignsAnIdThatMatchesTheLabelId = (fieldId) => {
     it('assigns an id that matches the label', () => {
       const component = <CustomerForm />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const field = getCustomerFormFieldFrom(container)(fieldName);
-      expect(field.id).toEqual(fieldName);
+      const { field } = query({ formId: thisFormId, field: fieldId });
+      expect(field.id).toEqual(fieldId);
     });
   };
 
@@ -104,10 +97,10 @@ describe('CustomerForm', () => {
     it('saves existing value when submitted', () => {
       const defaultFields = { [fieldName]: value };
       const component = <CustomerForm {...defaultFields} />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
-      const form = getFormFrom(container)('customer');
+      const { form } = query({ formId: thisFormId });
       ReactTestUtils.Simulate.submit(form);
 
       const body = getRequestBodyOf(window.fetch);
@@ -120,11 +113,10 @@ describe('CustomerForm', () => {
       const defaultFields = { [fieldName]: 'value' };
       const atEndFields = { [fieldName]: newValue };
       const component = <CustomerForm {...defaultFields} />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
-      const field = getCustomerFormFieldFrom(container)(fieldName);
-      const form = field.form;
+      const { form, field } = query({ formId: thisFormId, field: fieldName });
       ReactTestUtils.Simulate.change(field, {
         target: { value: newValue },
       });
@@ -166,21 +158,24 @@ describe('CustomerForm', () => {
 
   it('has a submit button', () => {
     const component = <CustomerForm />;
-    const { container, render } = createContainer();
+    const { render, query } = createContainer();
 
     render(component);
 
-    const submitButton = container.querySelector('input[type="submit"]');
+    const { element: submitButton } = query({
+      selector: 'input[type="submit"]',
+    });
     expect(submitButton).not.toBeNull();
   });
 
   it('calls fetch with the right properties when submitting data', () => {
     const component = <CustomerForm />;
-    const { container, render } = createContainer();
+    const { render, query } = createContainer();
 
     render(component);
-    const form = getFormFrom(container)('customer');
+    const { form } = query({ formId: thisFormId });
     ReactTestUtils.Simulate.submit(form);
+
     expect(window.fetch).toHaveBeenCalledWith(
       '/customers',
       expect.objectContaining({
@@ -203,10 +198,10 @@ describe('CustomerForm', () => {
     window.fetch.mockReturnValue(fetchResponse);
 
     const component = <CustomerForm onSave={saveSpy} />;
-    const { container, render } = createContainer();
+    const { render, query } = createContainer();
 
     render(component);
-    const form = getFormFrom(container)('customer');
+    const { form } = query({ formId: thisFormId });
     await act(async () => {
       ReactTestUtils.Simulate.submit(form);
     });
@@ -223,10 +218,10 @@ describe('CustomerForm', () => {
     window.fetch.mockReturnValue(fetchResponse);
 
     const component = <CustomerForm onSave={saveSpy} />;
-    const { container, render } = createContainer();
+    const { render, query } = createContainer();
 
     render(component);
-    const form = getFormFrom(container)('customer');
+    const { form } = query({ formId: thisFormId });
     await act(async () => {
       ReactTestUtils.Simulate.submit(form);
     });
@@ -238,10 +233,10 @@ describe('CustomerForm', () => {
     const preventDefaultSpy = jest.fn();
 
     const component = <CustomerForm />;
-    const { container, render } = createContainer();
+    const { render, query } = createContainer();
 
     render(component);
-    const form = getFormFrom(container)('customer');
+    const { form } = query({ formId: thisFormId });
     await act(async () => {
       ReactTestUtils.Simulate.submit(form, {
         preventDefault: preventDefaultSpy,
@@ -256,15 +251,15 @@ describe('CustomerForm', () => {
     window.fetch.mockReturnValue(fetchResponse);
 
     const component = <CustomerForm />;
-    const { container, render } = createContainer();
+    const { render, query } = createContainer();
 
     render(component);
-    const form = getFormFrom(container)('customer');
+    const { form } = query({ formId: thisFormId });
     await act(async () => {
       ReactTestUtils.Simulate.submit(form);
     });
 
-    const errorElement = container.querySelector('.error');
+    const { element: errorElement } = query({ selector: '.error' });
     expect(errorElement).not.toBeNull();
     expect(errorElement.textContent).toMatch('error occurred');
   });
