@@ -2,9 +2,6 @@
 
 window.fetch = () => {};
 
-import { act } from 'react-dom/test-utils';
-import ReactTestUtils from 'react-dom/test-utils';
-
 import { createContainer } from './utils/domManipulators';
 import {
   getFetchResponseOk,
@@ -32,8 +29,8 @@ describe('CustomerForm', () => {
 
     render(component);
 
-    const { form } = query({ formId: thisFormId });
-    expect(form).not.toBeNull();
+    const { formElement } = query({ formId: thisFormId });
+    expect(formElement).not.toBeNull();
   });
 
   // #region GENERIC USE CASES
@@ -51,8 +48,8 @@ describe('CustomerForm', () => {
 
       render(component);
 
-      const { field } = query({ formId: thisFormId, field: fieldName });
-      expectToBeInputFieldOfTypeText(field);
+      const { fieldElement } = query({ formId: thisFormId, field: fieldName });
+      expectToBeInputFieldOfTypeText(fieldElement);
     });
   };
 
@@ -63,8 +60,8 @@ describe('CustomerForm', () => {
 
       render(component);
 
-      const { field } = query({ formId: thisFormId, field: fieldName });
-      expect(field.defaultValue).toEqual('value');
+      const { fieldElement } = query({ formId: thisFormId, field: fieldName });
+      expect(fieldElement.defaultValue).toEqual('value');
     });
   };
 
@@ -75,9 +72,9 @@ describe('CustomerForm', () => {
 
       render(component);
 
-      const { label } = query({ formId: thisFormId, field: fieldName });
-      expect(label).not.toBeNull();
-      expect(label.textContent).toEqual(labelContent);
+      const { labelElement } = query({ formId: thisFormId, field: fieldName });
+      expect(labelElement).not.toBeNull();
+      expect(labelElement.textContent).toEqual(labelContent);
     });
   };
 
@@ -88,8 +85,8 @@ describe('CustomerForm', () => {
 
       render(component);
 
-      const { field } = query({ formId: thisFormId, field: fieldId });
-      expect(field.id).toEqual(fieldId);
+      const { fieldElement } = query({ formId: thisFormId, field: fieldId });
+      expect(fieldElement.id).toEqual(fieldId);
     });
   };
 
@@ -97,11 +94,10 @@ describe('CustomerForm', () => {
     it('saves existing value when submitted', () => {
       const defaultFields = { [fieldName]: value };
       const component = <CustomerForm {...defaultFields} />;
-      const { render, query } = createContainer();
+      const { render, interact } = createContainer();
 
       render(component);
-      const { form } = query({ formId: thisFormId });
-      ReactTestUtils.Simulate.submit(form);
+      interact({ formId: thisFormId }).interactiveForm.submit();
 
       const body = getRequestBodyOf(window.fetch);
       expect(body).toMatchObject(defaultFields);
@@ -113,14 +109,15 @@ describe('CustomerForm', () => {
       const defaultFields = { [fieldName]: 'value' };
       const atEndFields = { [fieldName]: newValue };
       const component = <CustomerForm {...defaultFields} />;
-      const { render, query } = createContainer();
+      const { render, interact } = createContainer();
 
       render(component);
-      const { form, field } = query({ formId: thisFormId, field: fieldName });
-      ReactTestUtils.Simulate.change(field, {
-        target: { value: newValue },
+      const { interactiveField, interactiveForm } = interact({
+        formId: thisFormId,
+        field: fieldName,
       });
-      ReactTestUtils.Simulate.submit(form);
+      interactiveField.change({ target: { value: newValue } });
+      interactiveForm.submit();
 
       const body = getRequestBodyOf(window.fetch);
       expect(body).toMatchObject(atEndFields);
@@ -162,19 +159,18 @@ describe('CustomerForm', () => {
 
     render(component);
 
-    const { element: submitButton } = query({
+    const { element: submitButtonElement } = query({
       selector: 'input[type="submit"]',
     });
-    expect(submitButton).not.toBeNull();
+    expect(submitButtonElement).not.toBeNull();
   });
 
   it('calls fetch with the right properties when submitting data', () => {
     const component = <CustomerForm />;
-    const { render, query } = createContainer();
+    const { render, interact } = createContainer();
 
     render(component);
-    const { form } = query({ formId: thisFormId });
-    ReactTestUtils.Simulate.submit(form);
+    interact({ formId: thisFormId }).interactiveForm.submit();
 
     expect(window.fetch).toHaveBeenCalledWith(
       '/customers',
@@ -198,13 +194,10 @@ describe('CustomerForm', () => {
     window.fetch.mockReturnValue(fetchResponse);
 
     const component = <CustomerForm onSave={saveSpy} />;
-    const { render, query } = createContainer();
+    const { render, interact } = createContainer();
 
     render(component);
-    const { form } = query({ formId: thisFormId });
-    await act(async () => {
-      ReactTestUtils.Simulate.submit(form);
-    });
+    await interact({ formId: thisFormId }).interactiveForm.submitAndWait();
 
     expect(saveSpy).toHaveBeenCalledWith(customer);
   });
@@ -218,13 +211,10 @@ describe('CustomerForm', () => {
     window.fetch.mockReturnValue(fetchResponse);
 
     const component = <CustomerForm onSave={saveSpy} />;
-    const { render, query } = createContainer();
+    const { render, interact } = createContainer();
 
     render(component);
-    const { form } = query({ formId: thisFormId });
-    await act(async () => {
-      ReactTestUtils.Simulate.submit(form);
-    });
+    await interact({ formId: thisFormId }).interactiveForm.submitAndWait();
 
     expect(saveSpy).not.toHaveBeenCalled();
   });
@@ -233,14 +223,11 @@ describe('CustomerForm', () => {
     const preventDefaultSpy = jest.fn();
 
     const component = <CustomerForm />;
-    const { render, query } = createContainer();
+    const { render, interact } = createContainer();
 
     render(component);
-    const { form } = query({ formId: thisFormId });
-    await act(async () => {
-      ReactTestUtils.Simulate.submit(form, {
-        preventDefault: preventDefaultSpy,
-      });
+    await interact({ formId: thisFormId }).interactiveForm.submitAndWait({
+      preventDefault: preventDefaultSpy,
     });
 
     expect(preventDefaultSpy).toHaveBeenCalled();
@@ -251,13 +238,10 @@ describe('CustomerForm', () => {
     window.fetch.mockReturnValue(fetchResponse);
 
     const component = <CustomerForm />;
-    const { render, query } = createContainer();
+    const { render, query, interact } = createContainer();
 
     render(component);
-    const { form } = query({ formId: thisFormId });
-    await act(async () => {
-      ReactTestUtils.Simulate.submit(form);
-    });
+    await interact({ formId: thisFormId }).interactiveForm.submitAndWait();
 
     const { element: errorElement } = query({ selector: '.error' });
     expect(errorElement).not.toBeNull();
