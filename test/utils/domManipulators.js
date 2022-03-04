@@ -69,12 +69,12 @@ const createContainer = () => {
           },
         },
         elements && {
-          interactiveElements: {
-            click: elements.map(click),
-            change: elements.map(change),
-            submit: elements.map(submit),
-            submitAndWait: elements.map(submitAndWait),
-          },
+          interactiveElements: elements.map((element) => ({
+            click: click(element),
+            change: change(element),
+            submit: submit(element),
+            submitAndWait: submitAndWait(element),
+          })),
         },
         formElement && {
           interactiveForm: {

@@ -87,10 +87,12 @@ describe('AppointmentsDayView', () => {
     const { container, render, interact } = createContainer();
 
     render(component);
-    const { interactiveElements: interactiveButtons } = interact({
+    const {
+      interactiveElements: [, interactiveButton],
+    } = interact({
       selector: 'button',
     });
-    interactiveButtons.click[1]();
+    interactiveButton.click();
 
     expect(container.textContent).toMatch('Jordan');
   });
