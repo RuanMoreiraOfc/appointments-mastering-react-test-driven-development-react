@@ -1,5 +1,3 @@
-import ReactTestUtils from 'react-dom/test-utils';
-
 import { createContainer } from './utils/domManipulators';
 
 import { AppointmentsDayView } from '../src/AppointmentsDayView';
@@ -20,32 +18,37 @@ describe('AppointmentsDayView', () => {
   it('renders a div with the right id', () => {
     const appointments = [];
     const component = <AppointmentsDayView appointments={appointments} />;
-    const { container, render } = createContainer();
+    const { render, query } = createContainer();
 
     render(component);
 
-    expect(container.querySelector('div#appointmentsDayView')).not.toBeNull();
+    const { element: divElement } = query({
+      selector: 'div#appointmentsDayView',
+    });
+    expect(divElement).not.toBeNull();
   });
 
   it('renders multiple appointments in an ol element', () => {
     const component = <AppointmentsDayView appointments={appointments} />;
-    const { container, render } = createContainer();
+    const { render, query } = createContainer();
 
     render(component);
 
-    expect(container.querySelector('ol')).not.toBeNull();
-    expect(container.querySelector('ol').children).toHaveLength(2);
+    const { element: olElement } = query({ selector: 'ol' });
+    expect(olElement).not.toBeNull();
+    expect(olElement.children).toHaveLength(2);
   });
 
   it('renders each appointment in an li', () => {
     const component = <AppointmentsDayView appointments={appointments} />;
-    const { container, render } = createContainer();
+    const { render, query } = createContainer();
 
     render(component);
 
-    expect(container.querySelectorAll('li')).toHaveLength(2);
-    expect(container.querySelectorAll('li')[0].textContent).toEqual('12:00');
-    expect(container.querySelectorAll('li')[1].textContent).toEqual('13:00');
+    const { elements: liElementList } = query({ selector: 'li' });
+    expect(liElementList).toHaveLength(2);
+    expect(liElementList[0].textContent).toEqual('12:00');
+    expect(liElementList[1].textContent).toEqual('13:00');
   });
 
   it('initially shows a message saying there are no appointments today', () => {
@@ -64,26 +67,30 @@ describe('AppointmentsDayView', () => {
     const { container, render } = createContainer();
 
     render(component);
+
     expect(container.textContent).toMatch('Ashley');
   });
 
   it('has a button element in each li', () => {
     const component = <AppointmentsDayView appointments={appointments} />;
-    const { container, render } = createContainer();
+    const { render, query } = createContainer();
 
     render(component);
 
-    expect(container.querySelectorAll('li > button')).toHaveLength(2);
-    expect(container.querySelectorAll('li > button')[0].type).toEqual('button');
+    const { elements: buttonElementList } = query({ selector: 'li > button' });
+    expect(buttonElementList).toHaveLength(2);
+    expect(buttonElementList[0].type).toEqual('button');
   });
 
   it('renders another appointment when selected', () => {
     const component = <AppointmentsDayView appointments={appointments} />;
-    const { container, render } = createContainer();
+    const { container, render, interact } = createContainer();
 
     render(component);
-    const button = container.querySelectorAll('button')[1];
-    ReactTestUtils.Simulate.click(button);
+    const { interactiveElements: interactiveButtons } = interact({
+      selector: 'button',
+    });
+    interactiveButtons.click[1]();
 
     expect(container.textContent).toMatch('Jordan');
   });
