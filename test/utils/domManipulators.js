@@ -1,6 +1,8 @@
 import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
+import ReactTestUtils from 'react-dom/test-utils';
 
-export { createContainer };
+export { createContainer, simulateEvent, simulateEventAndWait };
 
 const createContainer = () => {
   const container = document.createElement('div');
@@ -18,6 +20,16 @@ const createContainer = () => {
 
   const getFieldFromForm = (formId) => (field) =>
     getForm(formId).elements[field];
+
+  // #endregion
+
+  // #region INTERACTIONS
+
+  const click = (element) => simulateEvent('click').bind(null, element);
+  const change = (element) => simulateEvent('change').bind(null, element);
+  const submit = (element) => simulateEvent('submit').bind(null, element);
+  const submitAndWait = (element) =>
+    simulateEventAndWait('submit').bind(null, element);
 
   // #endregion
 
@@ -40,5 +52,48 @@ const createContainer = () => {
         { fieldElement },
       );
     },
+    interact({ selector, formId, field } = {}) {
+      const element = getElement(selector);
+      const elements = getElements(selector);
+      const formElement = getForm(formId);
+      const fieldElement = (formId && getFieldFromForm(formId)(field)) || null;
+
+      return Object.assign(
+        {},
+        element && {
+          interactiveElement: {
+            click: click(element),
+            change: change(element),
+            submit: submit(element),
+            submitAndWait: submitAndWait(element),
+          },
+        },
+        elements && {
+          interactiveElements: {
+            click: elements.map(click),
+            change: elements.map(change),
+            submit: elements.map(submit),
+            submitAndWait: elements.map(submitAndWait),
+          },
+        },
+        formElement && {
+          interactiveForm: {
+            submit: submit(formElement),
+            submitAndWait: submitAndWait(formElement),
+          },
+        },
+        fieldElement && {
+          interactiveField: {
+            change: change(fieldElement),
+          },
+        },
+      );
+    },
   };
 };
+
+const simulateEvent = (eventName) => (element, eventData) =>
+  ReactTestUtils.Simulate[eventName](element, eventData);
+
+const simulateEventAndWait = (eventName) => async (element, eventData) =>
+  await act(async () => ReactTestUtils.Simulate[eventName](element, eventData));
