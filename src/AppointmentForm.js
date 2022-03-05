@@ -15,6 +15,7 @@ const AppointmentForm = ({
   availableTimeSlots,
   startsAt,
 }) => {
+  const [error, setError] = useState(false);
   const [appointment, setAppointment] = useState({
     service,
     startsAt,
@@ -52,11 +53,14 @@ const AppointmentForm = ({
 
     if (response.ok === true) {
       onSave(response);
+    } else {
+      setError(true);
     }
   };
 
   return (
     <form id='appointment' onSubmit={handleSubmit}>
+      {error && <ErrorMessage />}
       <label htmlFor='service'>Service</label>
       <select
         id='service'
@@ -134,6 +138,10 @@ AppointmentForm.defaultProps = {
   today: new Date(),
   availableTimeSlots: [],
 };
+
+const ErrorMessage = () => (
+  <div className='error'>An error occurred during save.</div>
+);
 
 const TimeSlotTable = ({
   salonOpensAt,
