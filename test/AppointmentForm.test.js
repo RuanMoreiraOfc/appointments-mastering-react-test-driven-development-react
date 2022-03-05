@@ -541,4 +541,21 @@ describe('AppointmentForm', () => {
       }),
     );
   });
+
+  it('notifies onSave when form is submitted', async () => {
+    const saveSpy = jest.fn();
+
+    // ***
+
+    const fetchResponse = getFetchResponseOk();
+    window.fetch.mockReturnValue(fetchResponse);
+
+    const component = <AppointmentForm onSave={saveSpy} />;
+    const { render, interact } = createContainer();
+
+    render(component);
+    await interact({ formId: thisFormId }).interactiveForm.submitAndWait();
+
+    expect(saveSpy).toHaveBeenCalled();
+  });
 });
