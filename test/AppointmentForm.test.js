@@ -3,7 +3,7 @@
 window.fetch = () => {};
 
 import { createContainer } from './utils/domManipulators';
-import { getFetchResponseOk } from './utils/spyHelpers';
+import { getFetchResponseOk, getFetchResponseError } from './utils/spyHelpers';
 
 import { AppointmentForm } from '../src/AppointmentForm';
 
@@ -557,5 +557,22 @@ describe('AppointmentForm', () => {
     await interact({ formId: thisFormId }).interactiveForm.submitAndWait();
 
     expect(saveSpy).toHaveBeenCalled();
+  });
+
+  it('does not notify onSave if the POST request returns an error', async () => {
+    const saveSpy = jest.fn();
+
+    // ***
+
+    const fetchResponse = getFetchResponseError();
+    window.fetch.mockReturnValue(fetchResponse);
+
+    const component = <AppointmentForm onSave={saveSpy} />;
+    const { render, interact } = createContainer();
+
+    render(component);
+    await interact({ formId: thisFormId }).interactiveForm.submitAndWait();
+
+    expect(saveSpy).not.toHaveBeenCalled();
   });
 });
