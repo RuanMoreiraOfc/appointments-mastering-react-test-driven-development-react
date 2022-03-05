@@ -572,4 +572,18 @@ describe('AppointmentForm', () => {
 
     expect(saveSpy).not.toHaveBeenCalled();
   });
+
+  it('prevents the default action when submitting the form', async () => {
+    const preventDefaultSpy = jest.fn();
+
+    const component = <AppointmentForm />;
+    const { render, interact } = createContainer();
+
+    render(component);
+    await interact({ formId: thisFormId }).interactiveForm.submitAndWait({
+      preventDefault: preventDefaultSpy,
+    });
+
+    expect(preventDefaultSpy).toHaveBeenCalled();
+  });
 });
