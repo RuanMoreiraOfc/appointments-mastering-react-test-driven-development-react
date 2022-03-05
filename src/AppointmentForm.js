@@ -92,10 +92,6 @@ AppointmentForm.defaultProps = {
     'Cut & beard trim',
     'Extensions',
   ],
-  salonOpensAt: 9,
-  salonClosesAt: 19,
-  today: new Date(),
-  availableTimeSlots: [],
   selectableStylists: [
     'Maggie',
     'Mario',
@@ -117,6 +113,10 @@ AppointmentForm.defaultProps = {
     'Cut & beard trim': [],
     Extensions: [],
   },
+  salonOpensAt: 9,
+  salonClosesAt: 19,
+  today: new Date(),
+  availableTimeSlots: [],
 };
 
 const TimeSlotTable = ({
