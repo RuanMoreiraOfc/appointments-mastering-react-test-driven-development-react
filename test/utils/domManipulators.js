@@ -11,6 +11,12 @@ const createContainer = () => {
   const getElements = (selector) =>
     Array.from(container.querySelectorAll(selector));
 
+  // #region TABLE
+
+  const getTable = (id) => container.querySelector(`table[id="${id}"]`);
+
+  // #endregion
+
   // #region FORM
 
   const getForm = (id) => container.querySelector(`form[id="${id}"]`);
@@ -20,6 +26,11 @@ const createContainer = () => {
 
   const getFieldFromForm = (formId) => (field) =>
     getForm(formId).elements[field];
+
+  const getFieldsFromForm = (formId) => (field) =>
+    Array.from(getForm(formId).elements).filter(
+      (fieldElement) => fieldElement.name === field,
+    );
 
   // #endregion
 
@@ -36,27 +47,35 @@ const createContainer = () => {
   return {
     render: (component) => ReactDOM.render(component, container),
     container,
-    query({ selector, formId, field } = {}) {
+    query({ selector, tableId, formId, field } = {}) {
       const element = getElement(selector);
       const elements = getElements(selector);
+      const tableElement = getTable(tableId);
       const formElement = getForm(formId);
       const labelElement = (formId && getLabelFromForm(formId)(field)) || null;
       const fieldElement = (formId && getFieldFromForm(formId)(field)) || null;
+      const fieldElements =
+        (formId && getFieldsFromForm(formId)(field)) || null;
 
       return Object.assign(
         {},
         { element },
         { elements },
+        { tableElement },
         { formElement },
         { labelElement },
         { fieldElement },
+        { fieldElements },
       );
     },
-    interact({ selector, formId, field } = {}) {
+    interact({ selector, tableId, formId, field } = {}) {
       const element = getElement(selector);
       const elements = getElements(selector);
+      const tableElement = getTable(tableId);
       const formElement = getForm(formId);
       const fieldElement = (formId && getFieldFromForm(formId)(field)) || null;
+      const fieldElements =
+        (formId && getFieldsFromForm(formId)(field)) || null;
 
       return Object.assign(
         {},
@@ -76,6 +95,12 @@ const createContainer = () => {
             submitAndWait: submitAndWait(element),
           })),
         },
+        tableElement && {
+          interactiveTable: {
+            submit: submit(tableElement),
+            submitAndWait: submitAndWait(tableElement),
+          },
+        },
         formElement && {
           interactiveForm: {
             submit: submit(formElement),
@@ -86,6 +111,11 @@ const createContainer = () => {
           interactiveField: {
             change: change(fieldElement),
           },
+        },
+        fieldElements && {
+          interactiveFields: fieldElements.map((element) => ({
+            change: change(element),
+          })),
         },
       );
     },
