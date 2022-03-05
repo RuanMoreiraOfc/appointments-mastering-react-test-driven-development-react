@@ -40,8 +40,19 @@ const AppointmentForm = ({
     [],
   );
 
+  const handleSubmit = () => {
+    onSubmit(appointment);
+
+    window.fetch('/appointments', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(appointment),
+    });
+  };
+
   return (
-    <form id='appointment' onSubmit={() => onSubmit(appointment)}>
+    <form id='appointment' onSubmit={handleSubmit}>
       <label htmlFor='service'>Service</label>
       <select
         id='service'
@@ -113,6 +124,7 @@ AppointmentForm.defaultProps = {
     'Cut & beard trim': [],
     Extensions: [],
   },
+  onSubmit() {},
   salonOpensAt: 9,
   salonClosesAt: 19,
   today: new Date(),
