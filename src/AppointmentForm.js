@@ -9,6 +9,7 @@ const AppointmentForm = ({
   stylist,
   stylistsByService,
   onSubmit,
+  onSave,
   salonOpensAt,
   salonClosesAt,
   today,
@@ -40,15 +41,17 @@ const AppointmentForm = ({
     [],
   );
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     onSubmit(appointment);
 
-    window.fetch('/appointments', {
+    const response = await window.fetch('/appointments', {
       method: 'POST',
       credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(appointment),
     });
+
+    onSave(response);
   };
 
   return (
@@ -125,6 +128,7 @@ AppointmentForm.defaultProps = {
     Extensions: [],
   },
   onSubmit() {},
+  onSave() {},
   salonOpensAt: 9,
   salonClosesAt: 19,
   today: new Date(),
