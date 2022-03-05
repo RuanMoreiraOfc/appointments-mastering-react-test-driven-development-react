@@ -586,4 +586,19 @@ describe('AppointmentForm', () => {
 
     expect(preventDefaultSpy).toHaveBeenCalled();
   });
+
+  it('renders error message when fetch call fails', async () => {
+    const fetchResponse = getFetchResponseError();
+    window.fetch.mockReturnValue(fetchResponse);
+
+    const component = <AppointmentForm />;
+    const { render, query, interact } = createContainer();
+
+    render(component);
+    await interact({ formId: thisFormId }).interactiveForm.submitAndWait();
+
+    const { element: errorElement } = query({ selector: '.error' });
+    expect(errorElement).not.toBeNull();
+    expect(errorElement.textContent).toMatch('error occurred');
+  });
 });
