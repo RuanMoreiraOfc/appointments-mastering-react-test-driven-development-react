@@ -1,38 +1,24 @@
-import ReactTestUtils from 'react-dom/test-utils';
-
 import { createContainer } from './utils/domManipulators';
 
 import { AppointmentForm } from '../src/AppointmentForm';
 
 describe('AppointmentForm', () => {
-  const getFormFrom = (container) => (id) =>
-    container.querySelector(`form[id="${id}"]`);
-
-  const getAppointmentFormFieldFrom = (container) => (field) =>
-    getFormFrom(container)('appointment').elements[field];
+  const thisFormId = 'appointment';
+  const thisTableId = 'time-slots';
 
   const findOptionFrom = (dropdownNode) => (textContent) => {
     const options = Array.from(dropdownNode.childNodes);
     return options.find((option) => option.textContent === textContent);
   };
 
-  const getLabelFrom = (container) => (fieldId) =>
-    container.querySelector(`label[for="${fieldId}"]`);
-
-  const getTimeSlotTable = (container) =>
-    container.querySelector('table#time-slots');
-
-  const getStartsAtList = (container) =>
-    container.querySelectorAll(`input[name="startsAt"]`);
-
   it('renders a form', () => {
     const component = <AppointmentForm />;
-    const { container, render } = createContainer();
+    const { render, query } = createContainer();
 
     render(component);
 
-    const form = getFormFrom(container)('appointment');
-    expect(form).not.toBeNull();
+    const { formElement } = query({ formId: thisFormId });
+    expect(formElement).not.toBeNull();
   });
 
   // #region GENERIC USE CASES
@@ -40,25 +26,28 @@ describe('AppointmentForm', () => {
   const itRendersAsASelectBox = (fieldName) => {
     it('renders as a select box', () => {
       const component = <AppointmentForm />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const field = getAppointmentFormFieldFrom(container)(fieldName);
-      expect(field).toBeTruthy();
-      expect(field.tagName).toEqual('SELECT');
+      const { fieldElement } = query({ formId: thisFormId, field: fieldName });
+      expect(fieldElement).toBeTruthy();
+      expect(fieldElement.tagName).toEqual('SELECT');
     });
   };
 
   const itInitiallyHasABlankValueChosen = (fieldName) => {
     it('initially has a blank value chosen', () => {
       const component = <AppointmentForm />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const field = getAppointmentFormFieldFrom(container)(fieldName);
-      const firstNode = field.childNodes[0];
+      const {
+        fieldElement: {
+          childNodes: [firstNode],
+        },
+      } = query({ formId: thisFormId, field: fieldName });
       expect(firstNode).toBeTruthy();
       expect(firstNode.value).toEqual('');
       expect(firstNode.selected).toBeTruthy();
@@ -69,12 +58,13 @@ describe('AppointmentForm', () => {
     it('lists all options', () => {
       const options = ['A', 'B'];
       const component = <AppointmentForm {...{ [listProperty]: options }} />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const field = getAppointmentFormFieldFrom(container)(fieldName);
-      const optionNodes = Array.from(field.childNodes);
+      const optionNodes = Array.from(
+        query({ formId: thisFormId, field: fieldName }).fieldElement.childNodes,
+      );
       const renderedServices = optionNodes.map((node) => node.textContent);
       expect(renderedServices).toEqual(expect.arrayContaining(options));
     });
@@ -91,12 +81,12 @@ describe('AppointmentForm', () => {
           }}
         />
       );
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const field = getAppointmentFormFieldFrom(container)(fieldName);
-      const option = findOptionFrom(field)('A');
+      const { fieldElement } = query({ formId: thisFormId, field: fieldName });
+      const option = findOptionFrom(fieldElement)('A');
       expect(option.selected).toBeTruthy();
     });
   };
@@ -104,25 +94,25 @@ describe('AppointmentForm', () => {
   const itRendersALabel = (fieldName) => (labelText) => {
     it('renders a label', () => {
       const component = <AppointmentForm />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const label = getLabelFrom(container)(fieldName);
-      expect(label).not.toBeNull();
-      expect(label.textContent).toEqual(labelText);
+      const { labelElement } = query({ formId: thisFormId, field: fieldName });
+      expect(labelElement).not.toBeNull();
+      expect(labelElement.textContent).toEqual(labelText);
     });
   };
 
   const itAssignsAnIdThatMatchesTheLabelId = (fieldName) => {
     it('assigns an id that matches the label', () => {
       const component = <AppointmentForm />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const field = getAppointmentFormFieldFrom(container)(fieldName);
-      expect(field.id).toEqual(fieldName);
+      const { fieldElement } = query({ formId: thisFormId, field: fieldName });
+      expect(fieldElement.id).toEqual(fieldName);
     });
   };
 
@@ -138,11 +128,11 @@ describe('AppointmentForm', () => {
           onSubmit={(props) => expect(props[fieldName]).toEqual('A')}
         />
       );
-      const { container, render } = createContainer();
+      const { render, interact } = createContainer();
 
       render(component);
-      const form = getFormFrom(container)('appointment');
-      ReactTestUtils.Simulate.submit(form);
+      const { interactiveForm } = interact({ formId: thisFormId });
+      interactiveForm.submit();
 
       expect.hasAssertions();
     });
@@ -160,15 +150,17 @@ describe('AppointmentForm', () => {
           onSubmit={(props) => expect(props[fieldName]).toEqual('B')}
         />
       );
-      const { container, render } = createContainer();
+      const { render, interact } = createContainer();
 
       render(component);
-      const field = getAppointmentFormFieldFrom(container)(fieldName);
-      const form = field.form;
-      ReactTestUtils.Simulate.change(field, {
+      const { interactiveForm, interactiveField } = interact({
+        formId: thisFormId,
+        field: fieldName,
+      });
+      interactiveField.change({
         target: { value: 'B' },
       });
-      ReactTestUtils.Simulate.submit(form);
+      interactiveForm.submit();
 
       expect.hasAssertions();
     });
@@ -212,12 +204,14 @@ describe('AppointmentForm', () => {
           stylistsByService={stylistsByService}
         />
       );
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const field = getAppointmentFormFieldFrom(container)('stylist');
-      expect(field.childNodes).toHaveLength(2);
+      const {
+        fieldElement: { childNodes: options },
+      } = query({ formId: thisFormId, field: 'stylist' });
+      expect(options).toHaveLength(2);
     });
 
     it('does not render stylist options when current service makes it unavailable', () => {
@@ -235,38 +229,44 @@ describe('AppointmentForm', () => {
           stylistsByService={stylistsByService}
         />
       );
-      const { container, render } = createContainer();
+      const { render, query, interact } = createContainer();
 
       render(component);
-      const serviceField = getAppointmentFormFieldFrom(container)('service');
-      ReactTestUtils.Simulate.change(serviceField, {
+      const { interactiveField: interactiveServiceField } = interact({
+        formId: thisFormId,
+        field: 'service',
+      });
+      interactiveServiceField.change({
         target: { value: '2' },
       });
 
-      const stylistField = getAppointmentFormFieldFrom(container)('stylist');
-      expect(stylistField.childNodes).toHaveLength(3);
+      const { fieldElement: stylistFieldElement } = query({
+        formId: thisFormId,
+        field: 'stylist',
+      });
+      expect(stylistFieldElement.childNodes).toHaveLength(3);
     });
   });
 
   describe('time slot table', () => {
     it('renders a table for time slots', () => {
       const component = <AppointmentForm />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const table = getTimeSlotTable(container);
-      expect(table).not.toBeNull();
+      const { tableElement } = query({ tableId: thisTableId });
+      expect(tableElement).not.toBeNull();
     });
 
     it('renders a time slot for every half an hour between open and close times', () => {
       const component = <AppointmentForm salonOpensAt={9} salonClosesAt={11} />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const table = getTimeSlotTable(container);
-      const timesOfDay = table.querySelectorAll('tbody th');
+      const { tableElement } = query({ tableId: thisTableId });
+      const timesOfDay = tableElement.querySelectorAll('tbody th');
       expect(timesOfDay).toHaveLength(4);
       expect(timesOfDay[0].textContent).toEqual('09:00');
       expect(timesOfDay[1].textContent).toEqual('09:30');
@@ -275,12 +275,12 @@ describe('AppointmentForm', () => {
 
     it('renders an empty cell at the start of the header row', () => {
       const component = <AppointmentForm />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const table = getTimeSlotTable(container);
-      const headerRow = table.querySelector('thead > tr');
+      const { tableElement } = query({ tableId: thisTableId });
+      const headerRow = tableElement.querySelector('thead > tr');
       expect(headerRow).not.toBeNull();
       expect(headerRow.firstChild).not.toBeNull();
       expect(headerRow.firstChild.textContent).toEqual('');
@@ -289,12 +289,12 @@ describe('AppointmentForm', () => {
     it('renders a week of available dates', () => {
       const today = new Date(2022, 2, 13);
       const component = <AppointmentForm today={today} />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const table = getTimeSlotTable(container);
-      const dates = table.querySelectorAll('thead th:not(:first-child)');
+      const { tableElement } = query({ tableId: thisTableId });
+      const dates = tableElement.querySelectorAll('thead th:not(:first-child)');
       expect(dates).toHaveLength(7);
       expect(dates[0].textContent).toEqual('Sun 13');
       expect(dates[1].textContent).toEqual('Mon 14');
@@ -313,12 +313,12 @@ describe('AppointmentForm', () => {
           today={today}
         />
       );
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const table = getTimeSlotTable(container);
-      const cells = table.querySelectorAll('td');
+      const { tableElement } = query({ tableId: thisTableId });
+      const cells = tableElement.querySelectorAll('td');
       expect(cells).not.toHaveLength(0);
       expect(cells[0].querySelector('input[type="radio"]')).not.toBeNull();
       expect(cells[7].querySelector('input[type="radio"]')).not.toBeNull();
@@ -326,12 +326,12 @@ describe('AppointmentForm', () => {
 
     it('does not render radio buttons for unavailable time slots', () => {
       const component = <AppointmentForm availableTimeSlots={[]} />;
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const table = getTimeSlotTable(container);
-      const timesOfDay = table.querySelectorAll('input');
+      const { tableElement } = query({ tableId: thisTableId });
+      const timesOfDay = tableElement.querySelectorAll('input');
       expect(timesOfDay).toHaveLength(0);
     });
 
@@ -347,15 +347,20 @@ describe('AppointmentForm', () => {
           today={today}
         />
       );
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const fields = getStartsAtList(container);
-      expect(fields[0].value).toEqual(
+      const {
+        fieldElements: [firstFieldElement, secondFieldElement],
+      } = query({
+        formId: thisFormId,
+        field: 'startsAt',
+      });
+      expect(firstFieldElement.value).toEqual(
         availableTimeSlots[0].startsAt.toString(),
       );
-      expect(fields[1].value).toEqual(
+      expect(secondFieldElement.value).toEqual(
         availableTimeSlots[1].startsAt.toString(),
       );
     });
@@ -373,13 +378,18 @@ describe('AppointmentForm', () => {
           startsAt={availableTimeSlots[0].startsAt}
         />
       );
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const fields = getStartsAtList(container);
-      expect(fields[0]).toBeTruthy();
-      expect(fields[0].defaultChecked).toEqual(true);
+      const {
+        fieldElements: [fieldElement],
+      } = query({
+        formId: thisFormId,
+        field: 'startsAt',
+      });
+      expect(fieldElement).toBeTruthy();
+      expect(fieldElement.defaultChecked).toEqual(true);
     });
 
     it('saves new value when submitted', () => {
@@ -394,23 +404,31 @@ describe('AppointmentForm', () => {
           today={today}
           startsAt={availableTimeSlots[0].startsAt}
           onSubmit={({ startsAt }) => {
+            const { fieldElement } = query({
+              formId: thisFormId,
+              field: 'startsAt',
+            });
             expect(startsAt).toEqual(availableTimeSlots[1].startsAt);
-            const fields = getStartsAtList(container);
-            expect(fields[0].checked).toEqual(false);
+            expect(fieldElement.checked).toEqual(false);
           }}
         />
       );
-      const { container, render } = createContainer();
+      const { render, query, interact } = createContainer();
 
       render(component);
-      const fields = getStartsAtList(container);
-      ReactTestUtils.Simulate.change(fields[1], {
+      const {
+        interactiveForm,
+        interactiveFields: [, interactiveField],
+      } = interact({
+        formId: thisFormId,
+        field: 'startsAt',
+      });
+      interactiveField.change({
         target: {
           value: String(availableTimeSlots[1].startsAt),
         },
       });
-      const form = getFormFrom(container)('appointment');
-      ReactTestUtils.Simulate.submit(form);
+      interactiveForm.submit();
 
       expect.hasAssertions();
     });
@@ -432,12 +450,15 @@ describe('AppointmentForm', () => {
           availableTimeSlots={availableTimeSlots}
         />
       );
-      const { container, render } = createContainer();
+      const { render, query } = createContainer();
 
       render(component);
 
-      const fields = getStartsAtList(container);
-      expect(fields).toHaveLength(1);
+      const { fieldElements } = query({
+        formId: thisFormId,
+        field: 'startsAt',
+      });
+      expect(fieldElements).toHaveLength(1);
     });
 
     it('does not render time slots when current stylist makes it unavailable', () => {
@@ -457,15 +478,22 @@ describe('AppointmentForm', () => {
           availableTimeSlots={availableTimeSlots}
         />
       );
-      const { container, render } = createContainer();
+      const { render, query, interact } = createContainer();
+
       render(component);
-      const stylistField = getAppointmentFormFieldFrom(container)('stylist');
-      ReactTestUtils.Simulate.change(stylistField, {
+      const { interactiveField: interactiveStylistField } = interact({
+        formId: thisFormId,
+        field: 'stylist',
+      });
+      interactiveStylistField.change({
         target: { value: 'B' },
       });
 
-      const fields = getStartsAtList(container);
-      expect(fields).toHaveLength(2);
+      const { fieldElements } = query({
+        formId: thisFormId,
+        field: 'startsAt',
+      });
+      expect(fieldElements).toHaveLength(2);
     });
   });
 });
