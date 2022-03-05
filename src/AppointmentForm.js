@@ -78,6 +78,7 @@ const AppointmentForm = ({
         checkedTimeSlot={appointment.startsAt}
         handleChange={handleStartsAtChange}
       />
+      <input type='submit' value='Schedule' />
     </form>
   );
 };
