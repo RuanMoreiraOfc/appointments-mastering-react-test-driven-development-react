@@ -8,7 +8,6 @@ const AppointmentForm = ({
   selectableStylists,
   stylist,
   stylistsByService,
-  onSubmit,
   onSave,
   salonOpensAt,
   salonClosesAt,
@@ -42,8 +41,6 @@ const AppointmentForm = ({
   );
 
   const handleSubmit = async () => {
-    onSubmit(appointment);
-
     const response = await window.fetch('/appointments', {
       method: 'POST',
       credentials: 'same-origin',
@@ -129,7 +126,6 @@ AppointmentForm.defaultProps = {
     'Cut & beard trim': [],
     Extensions: [],
   },
-  onSubmit() {},
   onSave() {},
   salonOpensAt: 9,
   salonClosesAt: 19,

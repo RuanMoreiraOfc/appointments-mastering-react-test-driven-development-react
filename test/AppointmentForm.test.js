@@ -3,7 +3,11 @@
 window.fetch = () => {};
 
 import { createContainer } from './utils/domManipulators';
-import { getFetchResponseOk, getFetchResponseError } from './utils/spyHelpers';
+import {
+  getFetchResponseOk,
+  getFetchResponseError,
+  getRequestBodyOf,
+} from './utils/spyHelpers';
 
 import { AppointmentForm } from '../src/AppointmentForm';
 
@@ -132,38 +136,32 @@ describe('AppointmentForm', () => {
 
   const itSubmitsExistingValue = (fieldName) => (listProperty) => {
     it('saves existing value when submitted', () => {
-      const options = ['A', 'B'];
-      const component = (
-        <AppointmentForm
-          {...{
-            [listProperty]: options, //
-            [fieldName]: 'A',
-          }}
-          onSubmit={(props) => expect(props[fieldName]).toEqual('A')}
-        />
-      );
+      const defaultFields = { [fieldName]: 'A' };
+      const defaultProps = {
+        ...defaultFields,
+        [listProperty]: ['A', 'B'],
+      };
+      const component = <AppointmentForm {...defaultProps} />;
       const { render, interact } = createContainer();
 
       render(component);
       const { interactiveForm } = interact({ formId: thisFormId });
       interactiveForm.submit();
 
-      expect.hasAssertions();
+      const body = getRequestBodyOf(window.fetch);
+      expect(body).toMatchObject(defaultFields);
     });
   };
 
   const itSubmitsNewValue = (fieldName) => (listProperty) => {
     it('saves new value when submitted', () => {
-      const options = ['A', 'B'];
-      const component = (
-        <AppointmentForm
-          {...{
-            [listProperty]: options, //
-            [fieldName]: 'A',
-          }}
-          onSubmit={(props) => expect(props[fieldName]).toEqual('B')}
-        />
-      );
+      const defaultFields = { [fieldName]: 'A' };
+      const atEndFields = { [fieldName]: 'B' };
+      const defaultProps = {
+        ...defaultFields,
+        [listProperty]: ['A', 'B'],
+      };
+      const component = <AppointmentForm {...defaultProps} />;
       const { render, interact } = createContainer();
 
       render(component);
@@ -176,7 +174,8 @@ describe('AppointmentForm', () => {
       });
       interactiveForm.submit();
 
-      expect.hasAssertions();
+      const body = getRequestBodyOf(window.fetch);
+      expect(body).toMatchObject(atEndFields);
     });
   };
 
@@ -417,14 +416,6 @@ describe('AppointmentForm', () => {
           availableTimeSlots={availableTimeSlots}
           today={today}
           startsAt={availableTimeSlots[0].startsAt}
-          onSubmit={({ startsAt }) => {
-            const { fieldElement } = query({
-              formId: thisFormId,
-              field: 'startsAt',
-            });
-            expect(startsAt).toEqual(availableTimeSlots[1].startsAt);
-            expect(fieldElement.checked).toEqual(false);
-          }}
         />
       );
       const { render, query, interact } = createContainer();
@@ -444,7 +435,13 @@ describe('AppointmentForm', () => {
       });
       interactiveForm.submit();
 
-      expect.hasAssertions();
+      const body = getRequestBodyOf(window.fetch);
+      expect(body).toMatchObject({ startsAt: availableTimeSlots[1].startsAt });
+      const { fieldElement } = query({
+        formId: thisFormId,
+        field: 'startsAt',
+      });
+      expect(fieldElement.checked).toEqual(false);
     });
 
     it('does not render time slots when default stylist makes it unavailable', () => {
