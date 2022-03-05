@@ -496,4 +496,16 @@ describe('AppointmentForm', () => {
       expect(fieldElements).toHaveLength(2);
     });
   });
+
+  it('has a submit button', () => {
+    const component = <AppointmentForm />;
+    const { render, query } = createContainer();
+
+    render(component);
+
+    const { element: submitButtonElement } = query({
+      selector: 'input[type="submit"]',
+    });
+    expect(submitButtonElement).not.toBeNull();
+  });
 });
