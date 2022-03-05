@@ -40,7 +40,9 @@ const AppointmentForm = ({
     [],
   );
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
     const response = await window.fetch('/appointments', {
       method: 'POST',
       credentials: 'same-origin',
