@@ -601,4 +601,24 @@ describe('AppointmentForm', () => {
     expect(errorElement).not.toBeNull();
     expect(errorElement.textContent).toMatch('error occurred');
   });
+
+  it('clears error message when fetch call succeeds', async () => {
+    const fetchResponseError = getFetchResponseError();
+    const fetchResponseOk = getFetchResponseOk();
+    window.fetch.mockReturnValue(fetchResponseError);
+    window.fetch.mockReturnValue(fetchResponseOk);
+
+    const component = <AppointmentForm />;
+    const { render, query, interact } = createContainer();
+
+    render(component);
+    const {
+      interactiveForm: { submitAndWait },
+    } = interact({ formId: thisFormId });
+    await submitAndWait();
+    await submitAndWait();
+
+    const { element: errorElement } = query({ selector: '.error' });
+    expect(errorElement).toBeNull();
+  });
 });
