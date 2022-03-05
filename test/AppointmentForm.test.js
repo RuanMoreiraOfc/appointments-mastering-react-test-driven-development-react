@@ -1,4 +1,9 @@
+// INFO: create a simple mock instead of {import 'whatwg-fetch'};
+
+window.fetch = () => {};
+
 import { createContainer } from './utils/domManipulators';
+import { getFetchResponseOk } from './utils/spyHelpers';
 
 import { AppointmentForm } from '../src/AppointmentForm';
 
@@ -10,6 +15,15 @@ describe('AppointmentForm', () => {
     const options = Array.from(dropdownNode.childNodes);
     return options.find((option) => option.textContent === textContent);
   };
+
+  beforeEach(() => {
+    const fetchResponse = getFetchResponseOk({});
+    jest.spyOn(window, 'fetch').mockReturnValue(fetchResponse);
+  });
+
+  afterEach(() => {
+    window.fetch.mockRestore();
+  });
 
   it('renders a form', () => {
     const component = <AppointmentForm />;
@@ -507,5 +521,24 @@ describe('AppointmentForm', () => {
       selector: 'input[type="submit"]',
     });
     expect(submitButtonElement).not.toBeNull();
+  });
+
+  it('calls fetch with the right properties when submitting data', () => {
+    const component = <AppointmentForm />;
+    const { render, interact } = createContainer();
+
+    render(component);
+    interact({ formId: thisFormId }).interactiveForm.submit();
+
+    expect(window.fetch).toHaveBeenCalledWith(
+      '/appointments',
+      expect.objectContaining({
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }),
+    );
   });
 });
