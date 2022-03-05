@@ -42,6 +42,8 @@ const AppointmentForm = ({
   );
 
   const handleSubmit = async (event) => {
+    setError(false);
+
     event.preventDefault();
 
     const response = await window.fetch('/appointments', {
