@@ -51,7 +51,9 @@ const AppointmentForm = ({
       body: JSON.stringify(appointment),
     });
 
-    onSave(response);
+    if (response.ok === true) {
+      onSave(response);
+    }
   };
 
   return (
