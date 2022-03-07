@@ -22,7 +22,7 @@ const AppointmentsDayViewLoader = ({ today }) => {
     };
 
     fetchAppointments();
-  }, []);
+  }, [today]);
 
   return <AppointmentsDayView appointments={appointments} />;
 };
