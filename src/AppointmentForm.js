@@ -3,6 +3,7 @@ import { useState, useCallback } from 'react';
 export { AppointmentForm };
 
 const AppointmentForm = ({
+  customer,
   selectableServices,
   service,
   selectableStylists,
@@ -50,7 +51,10 @@ const AppointmentForm = ({
       method: 'POST',
       credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(appointment),
+      body: JSON.stringify({
+        ...appointment, //
+        customer: customer.id,
+      }),
     });
 
     if (response.ok === true) {
