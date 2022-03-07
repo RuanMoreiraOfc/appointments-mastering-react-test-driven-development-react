@@ -23,11 +23,11 @@ describe('AppointmentFormLoader', () => {
     AppointmentFormExports.AppointmentForm.mockRestore();
   });
 
-  it('fetches data when component is mounted', () => {
+  it('fetches data when component is mounted', async () => {
     const component = <AppointmentFormLoader />;
-    const { render } = createContainer();
+    const { renderAndPromise } = createContainer();
 
-    render(component);
+    await renderAndPromise(component);
 
     expect(window.fetch).toHaveBeenCalledWith(
       '/available-time-slots',
@@ -39,11 +39,11 @@ describe('AppointmentFormLoader', () => {
     );
   });
 
-  it('initially passes no data to AppointmentForm', () => {
+  it('initially passes no data to AppointmentForm', async () => {
     const component = <AppointmentFormLoader />;
-    const { render } = createContainer();
+    const { renderAndPromise } = createContainer();
 
-    render(component);
+    await renderAndPromise(component);
 
     expect(AppointmentFormExports.AppointmentForm).toHaveBeenCalledWith(
       { availableTimeSlots: [] },
