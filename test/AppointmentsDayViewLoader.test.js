@@ -86,4 +86,14 @@ describe('AppointmentsDayViewLoader', () => {
       expect.anything(),
     );
   });
+
+  it('calls window.fetch just once', async () => {
+    const component = <AppointmentsDayViewLoader />;
+    const { renderAndPromise } = createContainer();
+
+    await renderAndPromise(component);
+    await renderAndPromise(component);
+
+    expect(window.fetch.mock.calls.length).toBe(1);
+  });
 });
