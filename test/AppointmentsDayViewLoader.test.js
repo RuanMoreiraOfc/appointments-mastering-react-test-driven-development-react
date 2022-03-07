@@ -57,4 +57,15 @@ describe('AppointmentsDayViewLoader', () => {
       expect.anything(),
     );
   });
+
+  it('displays time slots that are fetched on mount', async () => {
+    const component = <AppointmentsDayViewLoader />;
+    const { renderAndPromise } = createContainer();
+
+    await renderAndPromise(component);
+
+    expect(
+      AppointmentsDayViewExports.AppointmentsDayView,
+    ).toHaveBeenLastCalledWith({ appointments }, expect.anything());
+  });
 });
