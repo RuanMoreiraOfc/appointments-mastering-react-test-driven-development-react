@@ -45,4 +45,16 @@ describe('AppointmentsDayViewLoader', () => {
       }),
     );
   });
+
+  it('initially passes no data to AppointmentsDayView', async () => {
+    const component = <AppointmentsDayViewLoader />;
+    const { renderAndPromise } = createContainer();
+
+    await renderAndPromise(component);
+
+    expect(AppointmentsDayViewExports.AppointmentsDayView).toHaveBeenCalledWith(
+      { appointments: [] },
+      expect.anything(),
+    );
+  });
 });
