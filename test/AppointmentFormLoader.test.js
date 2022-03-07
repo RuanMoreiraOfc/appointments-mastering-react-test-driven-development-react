@@ -50,4 +50,16 @@ describe('AppointmentFormLoader', () => {
       expect.anything(),
     );
   });
+
+  it('displays time slots that are fetched on mount', async () => {
+    const component = <AppointmentFormLoader />;
+    const { renderAndPromise } = createContainer();
+
+    await renderAndPromise(component);
+
+    expect(AppointmentFormExports.AppointmentForm).toHaveBeenLastCalledWith(
+      { availableTimeSlots },
+      expect.anything(),
+    );
+  });
 });
