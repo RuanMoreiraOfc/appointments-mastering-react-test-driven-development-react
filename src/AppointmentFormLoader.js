@@ -4,7 +4,7 @@ import { AppointmentForm } from './AppointmentForm';
 
 export { AppointmentFormLoader };
 
-const AppointmentFormLoader = () => {
+const AppointmentFormLoader = (props) => {
   const [availableTimeSlots, setAvailableTimeSlots] = useState([]);
 
   useEffect(() => {
@@ -21,5 +21,10 @@ const AppointmentFormLoader = () => {
     fetchAvailableTimeSlots();
   }, []);
 
-  return <AppointmentForm availableTimeSlots={availableTimeSlots} />;
+  return (
+    <AppointmentForm //
+      {...props}
+      availableTimeSlots={availableTimeSlots}
+    />
+  );
 };
