@@ -1,21 +1,25 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import { AppointmentForm } from './AppointmentForm';
 
 export { AppointmentFormLoader };
 
 const AppointmentFormLoader = () => {
+  const [availableTimeSlots, setAvailableTimeSlots] = useState([]);
+
   useEffect(() => {
-    const fetchAvailableTimeSlots = () => {
-      window.fetch('/available-time-slots', {
+    const fetchAvailableTimeSlots = async () => {
+      const response = await window.fetch('/available-time-slots', {
         method: 'GET',
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
       });
+
+      setAvailableTimeSlots(await response.json());
     };
 
     fetchAvailableTimeSlots();
   }, []);
 
-  return <AppointmentForm availableTimeSlots={[]} />;
+  return <AppointmentForm availableTimeSlots={availableTimeSlots} />;
 };
