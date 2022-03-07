@@ -628,4 +628,16 @@ describe('AppointmentForm', () => {
     const { element: errorElement } = query({ selector: '.error' });
     expect(errorElement).toBeNull();
   });
+
+  it('passes the customer id to fetch when submitting', async () => {
+    const component = <AppointmentForm customer={customer} />;
+    const { renderAndPromise, interact } = createContainer();
+
+    await renderAndPromise(component);
+    await interact({ formId: thisFormId }).interactiveForm.submit();
+
+    expect(getRequestBodyOf(window.fetch)).toMatchObject({
+      customer: customer.id,
+    });
+  });
 });
