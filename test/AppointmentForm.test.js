@@ -15,6 +15,8 @@ describe('AppointmentForm', () => {
   const thisFormId = 'appointment';
   const thisTableId = 'time-slots';
 
+  const customer = { id: 123 };
+
   const findOptionFrom = (dropdownNode) => (textContent) => {
     const options = Array.from(dropdownNode.childNodes);
     return options.find((option) => option.textContent === textContent);
@@ -141,7 +143,9 @@ describe('AppointmentForm', () => {
         ...defaultFields,
         [listProperty]: ['A', 'B'],
       };
-      const component = <AppointmentForm {...defaultProps} />;
+      const component = (
+        <AppointmentForm customer={customer} {...defaultProps} />
+      );
       const { render, interact } = createContainer();
 
       render(component);
@@ -161,7 +165,9 @@ describe('AppointmentForm', () => {
         ...defaultFields,
         [listProperty]: ['A', 'B'],
       };
-      const component = <AppointmentForm {...defaultProps} />;
+      const component = (
+        <AppointmentForm customer={customer} {...defaultProps} />
+      );
       const { render, interact } = createContainer();
 
       render(component);
@@ -413,6 +419,7 @@ describe('AppointmentForm', () => {
       ];
       const component = (
         <AppointmentForm
+          customer={customer}
           availableTimeSlots={availableTimeSlots}
           today={today}
           startsAt={availableTimeSlots[0].startsAt}
@@ -521,7 +528,7 @@ describe('AppointmentForm', () => {
   });
 
   it('calls fetch with the right properties when submitting data', () => {
-    const component = <AppointmentForm />;
+    const component = <AppointmentForm customer={customer} />;
     const { render, interact } = createContainer();
 
     render(component);
@@ -547,7 +554,7 @@ describe('AppointmentForm', () => {
     const fetchResponse = getFetchResponseOk();
     window.fetch.mockReturnValue(fetchResponse);
 
-    const component = <AppointmentForm onSave={saveSpy} />;
+    const component = <AppointmentForm customer={customer} onSave={saveSpy} />;
     const { render, interact } = createContainer();
 
     render(component);
@@ -564,7 +571,7 @@ describe('AppointmentForm', () => {
     const fetchResponse = getFetchResponseError();
     window.fetch.mockReturnValue(fetchResponse);
 
-    const component = <AppointmentForm onSave={saveSpy} />;
+    const component = <AppointmentForm customer={customer} onSave={saveSpy} />;
     const { render, interact } = createContainer();
 
     render(component);
@@ -576,7 +583,7 @@ describe('AppointmentForm', () => {
   it('prevents the default action when submitting the form', async () => {
     const preventDefaultSpy = jest.fn();
 
-    const component = <AppointmentForm />;
+    const component = <AppointmentForm customer={customer} />;
     const { render, interact } = createContainer();
 
     render(component);
@@ -591,7 +598,7 @@ describe('AppointmentForm', () => {
     const fetchResponse = getFetchResponseError();
     window.fetch.mockReturnValue(fetchResponse);
 
-    const component = <AppointmentForm />;
+    const component = <AppointmentForm customer={customer} />;
     const { render, query, interact } = createContainer();
 
     render(component);
@@ -608,7 +615,7 @@ describe('AppointmentForm', () => {
     window.fetch.mockReturnValue(fetchResponseError);
     window.fetch.mockReturnValue(fetchResponseOk);
 
-    const component = <AppointmentForm />;
+    const component = <AppointmentForm customer={customer} />;
     const { render, query, interact } = createContainer();
 
     render(component);
