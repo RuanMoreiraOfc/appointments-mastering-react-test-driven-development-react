@@ -5,6 +5,7 @@ window.fetch = () => {};
 import { createContainer } from './utils/domManipulators';
 import { getFetchResponseOk } from './utils/spyHelpers';
 
+import * as AppointmentFormExports from '../src/AppointmentForm';
 import { AppointmentFormLoader } from '../src/AppointmentFormLoader';
 
 describe('AppointmentFormLoader', () => {
@@ -14,10 +15,12 @@ describe('AppointmentFormLoader', () => {
   beforeEach(() => {
     const fetchResponse = getFetchResponseOk(availableTimeSlots);
     jest.spyOn(window, 'fetch').mockReturnValue(fetchResponse);
+    jest.spyOn(AppointmentFormExports, 'AppointmentForm').mockReturnValue(null);
   });
 
   afterEach(() => {
     window.fetch.mockRestore();
+    AppointmentFormExports.AppointmentForm.mockRestore();
   });
 
   it('fetches data when component is mounted', () => {
@@ -33,6 +36,18 @@ describe('AppointmentFormLoader', () => {
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
       }),
+    );
+  });
+
+  it('initially passes no data to AppointmentForm', () => {
+    const component = <AppointmentFormLoader />;
+    const { render } = createContainer();
+
+    render(component);
+
+    expect(AppointmentFormExports.AppointmentForm).toHaveBeenCalledWith(
+      { availableTimeSlots: [] },
+      expect.anything(),
     );
   });
 });
