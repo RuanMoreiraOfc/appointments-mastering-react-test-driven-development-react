@@ -49,6 +49,8 @@ const createContainer = () => {
       act(() => {
         ReactDOM.render(component, container);
       }),
+    renderAndPromise: async (component) =>
+      await act(async () => ReactDOM.render(component, container)),
     container,
     query({ selector, tableId, formId, field } = {}) {
       const element = getElement(selector);
