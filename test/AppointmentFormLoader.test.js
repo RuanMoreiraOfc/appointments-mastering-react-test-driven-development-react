@@ -62,4 +62,14 @@ describe('AppointmentFormLoader', () => {
       expect.anything(),
     );
   });
+
+  it('calls window.fetch just once', async () => {
+    const component = <AppointmentFormLoader />;
+    const { renderAndPromise } = createContainer();
+
+    await renderAndPromise(component);
+    await renderAndPromise(component);
+
+    expect(window.fetch.mock.calls.length).toBe(1);
+  });
 });
