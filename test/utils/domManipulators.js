@@ -45,7 +45,10 @@ const createContainer = () => {
   // #endregion
 
   return {
-    render: (component) => ReactDOM.render(component, container),
+    render: (component) =>
+      act(() => {
+        ReactDOM.render(component, container);
+      }),
     container,
     query({ selector, tableId, formId, field } = {}) {
       const element = getElement(selector);
