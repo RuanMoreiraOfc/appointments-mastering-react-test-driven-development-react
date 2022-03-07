@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { AppointmentForm } from './AppointmentForm';
+
 export { AppointmentFormLoader };
 
 const AppointmentFormLoader = () => {
@@ -15,5 +17,5 @@ const AppointmentFormLoader = () => {
     fetchAvailableTimeSlots();
   }, []);
 
-  return null;
+  return <AppointmentForm availableTimeSlots={[]} />;
 };
