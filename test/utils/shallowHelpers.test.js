@@ -37,4 +37,16 @@ describe('getChildrenFrom', () => {
 
     expect(children).toEqual([]);
   });
+
+  it('returns array of children for elements with one child', () => {
+    const element = (
+      <div>
+        <p>A</p>
+      </div>
+    );
+
+    const children = getChildrenFrom(element);
+
+    expect(children).toEqual([<p>A</p>]);
+  });
 });
