@@ -21,4 +21,12 @@ describe('getChildrenFrom', () => {
 
     expect(children).toEqual([<p>A</p>, <p>B</p>]);
   });
+
+  it('returns text as an array of one item', () => {
+    const element = <div>text</div>;
+
+    const children = getChildrenFrom(element);
+
+    expect(children).toEqual(['text']);
+  });
 });
