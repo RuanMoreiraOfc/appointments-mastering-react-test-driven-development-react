@@ -29,4 +29,12 @@ describe('getChildrenFrom', () => {
 
     expect(children).toEqual(['text']);
   });
+
+  it('returns no children for text', () => {
+    const element = 'text';
+
+    const children = getChildrenFrom(element);
+
+    expect(children).toEqual([]);
+  });
 });
