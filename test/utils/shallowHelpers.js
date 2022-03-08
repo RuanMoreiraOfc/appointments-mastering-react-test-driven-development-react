@@ -1,3 +1,5 @@
+import ShallowRenderer from 'react-test-renderer/shallow';
+
 export { getChildrenFrom, createShallowRenderer };
 
 const getChildrenFrom = (element) => {
@@ -25,4 +27,11 @@ const getChildrenFrom = (element) => {
   return [children];
 };
 
-const createShallowRenderer = () => null;
+const createShallowRenderer = () => {
+  const renderer = new ShallowRenderer();
+
+  return {
+    render: (component) => renderer.render(component),
+    getChild: () => undefined,
+  };
+};
