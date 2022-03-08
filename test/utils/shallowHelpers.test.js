@@ -65,4 +65,19 @@ describe('getChild', () => {
     const child = getChild(0);
     expect(child).not.toBeDefined();
   });
+
+  it('returns child of rendered element', () => {
+    const component = (
+      <TestComponent>
+        <p>A</p>
+        <p>B</p>
+      </TestComponent>
+    );
+    const { render, getChild } = createShallowRenderer();
+
+    render(component);
+
+    const child = getChild(1);
+    expect(child).toEqual(<p>B</p>);
+  });
 });
