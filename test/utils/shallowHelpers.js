@@ -1,3 +1,3 @@
 export { getChildrenFrom };
 
-const getChildrenFrom = () => null;
+const getChildrenFrom = () => [];
