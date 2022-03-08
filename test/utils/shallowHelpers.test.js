@@ -53,9 +53,9 @@ describe('getChildrenFrom', () => {
   });
 });
 
-describe('getChild', () => {
-  const TestComponent = ({ children }) => <Fragment>{children}</Fragment>;
+const TestComponent = ({ children }) => <Fragment>{children}</Fragment>;
 
+describe('getChild', () => {
   it('returns undefined if the child does not exist', () => {
     const component = <TestComponent />;
     const { render, getChild } = createShallowRenderer();
