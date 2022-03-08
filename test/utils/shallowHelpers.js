@@ -33,5 +33,6 @@ const createShallowRenderer = () => {
   return {
     render: (component) => renderer.render(component),
     getChild: (n) => getChildrenFrom(renderer.getRenderOutput())[n],
+    getElementsMatching: () => undefined,
   };
 };

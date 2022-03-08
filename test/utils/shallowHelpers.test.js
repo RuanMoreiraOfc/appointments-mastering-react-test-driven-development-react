@@ -81,3 +81,22 @@ describe('getChild', () => {
     expect(child).toEqual(<p>B</p>);
   });
 });
+
+describe('getElementsMatching', () => {
+  const compareByType = (typeName) => (element) => element.type === typeName;
+
+  it('finds multiple direct children', () => {
+    const component = (
+      <TestComponent>
+        <p>A</p>
+        <p>B</p>
+      </TestComponent>
+    );
+    const { render, getElementsMatching } = createShallowRenderer();
+
+    render(component);
+
+    const elementList = getElementsMatching(compareByType('p'));
+    expect(elementList).toEqual([<p>A</p>, <p>B</p>]);
+  });
+});
