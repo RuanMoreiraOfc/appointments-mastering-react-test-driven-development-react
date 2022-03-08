@@ -1,7 +1,7 @@
 export { getChildrenFrom };
 
 const getChildrenFrom = (element) => {
-  if (typeof element === 'string') {
+  if (Object.prototype.toString.call(element) === '[object String]') {
     return [];
   }
 
@@ -15,5 +15,9 @@ const getChildrenFrom = (element) => {
     return [children];
   }
 
-  return children;
+  if (Array.isArray(children)) {
+    return children;
+  }
+
+  return [children];
 };
