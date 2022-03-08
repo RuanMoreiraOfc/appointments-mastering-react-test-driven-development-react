@@ -1,4 +1,6 @@
-import { getChildrenFrom } from './shallowHelpers';
+import { Fragment } from 'react';
+
+import { getChildrenFrom, createShallowRenderer } from './shallowHelpers';
 
 describe('getChildrenFrom', () => {
   it('returns no children', () => {
@@ -48,5 +50,19 @@ describe('getChildrenFrom', () => {
     const children = getChildrenFrom(element);
 
     expect(children).toEqual([<p>A</p>]);
+  });
+});
+
+describe('getChild', () => {
+  const TestComponent = ({ children }) => <Fragment>{children}</Fragment>;
+
+  it('returns undefined if the child does not exist', () => {
+    const component = <TestComponent />;
+    const { render, getChild } = createShallowRenderer();
+
+    render(component);
+
+    const child = getChild(0);
+    expect(child).not.toBeDefined();
   });
 });

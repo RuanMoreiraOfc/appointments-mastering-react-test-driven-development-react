@@ -1,4 +1,4 @@
-export { getChildrenFrom };
+export { getChildrenFrom, createShallowRenderer };
 
 const getChildrenFrom = (element) => {
   const isString = (obj) =>
@@ -24,3 +24,5 @@ const getChildrenFrom = (element) => {
 
   return [children];
 };
+
+const createShallowRenderer = () => null;
