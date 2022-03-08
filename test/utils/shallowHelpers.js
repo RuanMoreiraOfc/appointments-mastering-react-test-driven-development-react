@@ -1,6 +1,10 @@
 export { getChildrenFrom };
 
 const getChildrenFrom = (element) => {
+  if (typeof element === 'string') {
+    return [];
+  }
+
   const children = element.props.children;
 
   if (!children) {
