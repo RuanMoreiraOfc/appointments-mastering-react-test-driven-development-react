@@ -27,12 +27,16 @@ const getChildrenFrom = (element) => {
   return [children];
 };
 
+const getElementsMatching = (matcherFn) => (element) =>
+  getChildrenFrom(element).filter(matcherFn);
+
 const createShallowRenderer = () => {
   const renderer = new ShallowRenderer();
 
   return {
     render: (component) => renderer.render(component),
     getChild: (n) => getChildrenFrom(renderer.getRenderOutput())[n],
-    getElementsMatching: () => undefined,
+    getElementsMatching: (matcherFn) =>
+      getElementsMatching(matcherFn)(renderer.getRenderOutput()),
   };
 };
