@@ -1,6 +1,6 @@
 import ShallowRenderer from 'react-test-renderer/shallow';
 
-export { getChildrenFrom, createShallowRenderer };
+export { getChildrenFrom, createShallowRenderer, compareByType };
 
 const getChildrenFrom = (element) => {
   const isString = (obj) =>
@@ -26,6 +26,8 @@ const getChildrenFrom = (element) => {
 
   return [children];
 };
+
+const compareByType = (typeName) => (element) => element.type === typeName;
 
 const getElementsMatching = (matcherFn) => (element) =>
   getChildrenFrom(element).filter(matcherFn);

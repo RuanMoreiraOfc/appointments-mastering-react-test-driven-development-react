@@ -1,6 +1,10 @@
 import { Fragment } from 'react';
 
-import { getChildrenFrom, createShallowRenderer } from './shallowHelpers';
+import {
+  getChildrenFrom,
+  createShallowRenderer,
+  compareByType,
+} from './shallowHelpers';
 
 describe('getChildrenFrom', () => {
   it('returns no children', () => {
@@ -83,8 +87,6 @@ describe('getChild', () => {
 });
 
 describe('getElementsMatching', () => {
-  const compareByType = (typeName) => (element) => element.type === typeName;
-
   it('finds multiple direct children', () => {
     const component = (
       <TestComponent>
