@@ -1,6 +1,13 @@
 import ShallowRenderer from 'react-test-renderer/shallow';
 
-export { getChildrenFrom, createShallowRenderer, compareByType };
+export {
+  getChildrenFrom,
+  createShallowRenderer,
+  compareByType,
+  compareById,
+  compareByClassName,
+  clickElement,
+};
 
 const getChildrenFrom = (element) => {
   const isString = (obj) =>
@@ -29,6 +36,11 @@ const getChildrenFrom = (element) => {
 
 const compareByType = (typeName) => (element) => element.type === typeName;
 
+const compareById = (id) => (element) => element.props?.id === id;
+
+const compareByClassName = (className) => (element) =>
+  element.props?.className === className;
+
 const getElementsMatching = (matcherFn) => (element) =>
   getChildrenFrom(element).filter(matcherFn);
 
@@ -43,3 +55,5 @@ const createShallowRenderer = () => {
       getElementsMatching(matcherFn)(getRenderOutput()),
   };
 };
+
+const clickElement = (element) => element.props.onClick();
