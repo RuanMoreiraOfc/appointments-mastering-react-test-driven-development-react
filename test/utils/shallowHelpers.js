@@ -32,11 +32,12 @@ const getElementsMatching = (matcherFn) => (element) =>
 
 const createShallowRenderer = () => {
   const renderer = new ShallowRenderer();
+  const getRenderOutput = () => renderer.getRenderOutput();
 
   return {
     render: (component) => renderer.render(component),
-    getChild: (n) => getChildrenFrom(renderer.getRenderOutput())[n],
+    getChild: (n) => getChildrenFrom(getRenderOutput())[n],
     getElementsMatching: (matcherFn) =>
-      getElementsMatching(matcherFn)(renderer.getRenderOutput()),
+      getElementsMatching(matcherFn)(getRenderOutput()),
   };
 };
