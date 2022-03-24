@@ -34,12 +34,12 @@ const getChildrenFrom = (element) => {
   return [children];
 };
 
-const compareByType = (typeName) => (element) => element.type === typeName;
+const compareByType = (typeName) => (element) => element?.type === typeName;
 
-const compareById = (id) => (element) => element.props?.id === id;
+const compareById = (id) => (element) => element?.props?.id === id;
 
 const compareByClassName = (className) => (element) =>
-  element.props?.className === className;
+  element?.props?.className === className;
 
 const getElementsMatching = (matcherFn) => (element) =>
   getChildrenFrom(element).filter(matcherFn);
@@ -56,4 +56,4 @@ const createShallowRenderer = () => {
   };
 };
 
-const clickElement = (element) => element.props.onClick();
+const clickElement = (element) => element?.props?.onClick();
