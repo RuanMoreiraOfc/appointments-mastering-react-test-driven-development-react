@@ -15,4 +15,15 @@ describe('App', () => {
     );
     expect(elements).toBeDefined();
   });
+
+  it('has a button bar as the first child', () => {
+    const component = <App />;
+    const { render, getChild } = createShallowRenderer();
+
+    render(component);
+
+    const element = getChild(0);
+    expect(element.type).toEqual('div');
+    expect(element.props.className).toEqual('button-bar');
+  });
 });
