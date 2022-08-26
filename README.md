@@ -64,7 +64,7 @@ Also is good have a code editor like [VSCode][btn-vscode].
 ###### - to clone the repository
 
 ```bash
-git clone https://github.com/ruanmoreiraofc/appointments-mastering-react-test-driven-development.git
+git clone https://github.com/ruanmoreiraofc/appointments-mastering-react-test-driven-development-react.git
 ```
 
 ###### - to enter into the folder
@@ -147,12 +147,12 @@ Made with :heart: by Ruan Moreira de Jesus!
 
 <!-- *** INFO CARDS *** -->
 
-[card-languages]: https://img.shields.io/github/languages/count/ruanmoreiraofc/appointments-mastering-react-test-driven-development?style=for-the-badge&label=Languages
-[card-last-commit]: https://img.shields.io/github/last-commit/ruanmoreiraofc/appointments-mastering-react-test-driven-development?style=for-the-badge&label=Last%20Commit
-[card-repo-size]: https://img.shields.io/github/repo-size/ruanmoreiraofc/appointments-mastering-react-test-driven-development?style=for-the-badge&label=Repo%20Size
-[card-code-size]: https://img.shields.io/github/languages/code-size/ruanmoreiraofc/appointments-mastering-react-test-driven-development?style=for-the-badge&label=Code%20Size
-[card-license]: https://img.shields.io/github/license/ruanmoreiraofc/appointments-mastering-react-test-driven-development?style=for-the-badge&label=License
-[card-issues]: https://img.shields.io/github/issues/ruanmoreiraofc/appointments-mastering-react-test-driven-development?style=for-the-badge
+[card-languages]: https://img.shields.io/github/languages/count/ruanmoreiraofc/appointments-mastering-react-test-driven-development-react?style=for-the-badge&label=Languages
+[card-last-commit]: https://img.shields.io/github/last-commit/ruanmoreiraofc/appointments-mastering-react-test-driven-development-react?style=for-the-badge&label=Last%20Commit
+[card-repo-size]: https://img.shields.io/github/repo-size/ruanmoreiraofc/appointments-mastering-react-test-driven-development-react?style=for-the-badge&label=Repo%20Size
+[card-code-size]: https://img.shields.io/github/languages/code-size/ruanmoreiraofc/appointments-mastering-react-test-driven-development-react?style=for-the-badge&label=Code%20Size
+[card-license]: https://img.shields.io/github/license/ruanmoreiraofc/appointments-mastering-react-test-driven-development-react?style=for-the-badge&label=License
+[card-issues]: https://img.shields.io/github/issues/ruanmoreiraofc/appointments-mastering-react-test-driven-development-react?style=for-the-badge
 
 <!-- *** MAIN BUTTONS *** -->
 
@@ -167,7 +167,7 @@ Made with :heart: by Ruan Moreira de Jesus!
 [btn-skip]: #id-preview
 [btn-goto-clone]: #id-clone
 [btn-goto-license]: #id-license
-[btn-goto-issues]: https://github.com/ruanmoreiraofc/appointments-mastering-react-test-driven-development/issues?q=is%3Aopen
+[btn-goto-issues]: https://github.com/ruanmoreiraofc/appointments-mastering-react-test-driven-development-react/issues?q=is%3Aopen
 
  <!---->
 
